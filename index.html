@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LOOMPER — Conexão real no transporte de veículos</title>
+
+  <meta name="description" content="A LOOMPER conecta motoristas, chapas e transportadoras com segurança, previsibilidade e dignidade. Beta fechado.">
+
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link rel="icon" href="/favicon.png">
+</head>
+
+<body>
+
+<header class="hero">
+  <div class="container hero-grid">
+    <div>
+      <h1>O transporte de veículos,<br>sem ruído.</h1>
+      <p>Menos incerteza. Mais trabalho. Mais dignidade.</p>
+      <a href="#beta" class="btn-primary">Entrar no Beta</a>
+    </div>
+    <img src="/assets/images/hero.png" alt="Fluxo Loomper">
+  </div>
+</header>
+
+<section class="section">
+  <div class="container center">
+    <h2>Como funciona</h2>
+    <img src="/assets/images/flow.png" alt="Fluxo Loomper" class="flow-img">
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container profiles-grid">
+    <div>
+      <img src="/assets/images/motorista.svg">
+      <h3>Motoristas</h3>
+      <p>Viagens mais previsíveis e menos tempo parado.</p>
+    </div>
+    <div>
+      <img src="/assets/images/chapa.svg">
+      <h3>Chapas</h3>
+      <p>Mais oportunidades e dignidade no trabalho.</p>
+    </div>
+    <div>
+      <img src="/assets/images/empresa.svg">
+      <h3>Transportadoras</h3>
+      <p>Escala, segurança e organização operacional.</p>
+    </div>
+  </div>
+</section>
+
+<section id="beta" class="section">
+  <div class="container">
+    <h2>Participe do Beta</h2>
+
+    <form name="beta-loomper" method="POST" data-netlify="true">
+      <input type="hidden" name="form-name" value="beta-loomper">
+      <input type="hidden" name="user_id" id="user_id">
+
+      <input name="nome" placeholder="Nome completo" required>
+      <input type="email" name="email" placeholder="E-mail" required>
+
+      <select name="perfil" required>
+        <option value="">Seu perfil</option>
+        <option>Motorista</option>
+        <option>Chapa</option>
+        <option>Transportadora</option>
+      </select>
+
+      <label class="terms">
+        <input type="checkbox" required>
+        Li e aceito os <a href="/terms.html" target="_blank">Termos de Uso</a>
+      </label>
+
+      <button type="submit" class="btn-primary">Solicitar acesso</button>
+    </form>
+  </div>
+</section>
+
+<footer class="footer">
+  <p>© 2025 LOOMPER • Beta fechado</p>
+</footer>
+
+<script src="/assets/js/main.js" defer></script>
+</body>
+</html>
