@@ -1,61 +1,48 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>LOOMPER — Conexão no transporte de veículos</title>
-</head>
+<form 
+  name="waitlist"
+  method="POST"
+  action="/sucesso.html"
+  data-netlify="true"
+  netlify-honeypot="bot-field"
+>
 
-<body>
+  <input type="hidden" name="form-name" value="waitlist">
 
-  <h1>LOOMPER</h1>
-  <p>Versão Beta • Acesso Fechado</p>
+  <!-- Honeypot -->
+  <p style="display:none;">
+    <label>Não preencha: <input name="bot-field"></label>
+  </p>
 
-  <!-- FORMULÁRIO NETLIFY PURO -->
-  <form 
-    name="waitlist"
-    method="POST"
-    data-netlify="true"
-    action="/sucesso.html"
-  >
+  <p>
+    <label>Nome completo *</label><br>
+    <input type="text" name="name" required>
+  </p>
 
-    <!-- ESSENCIAL PARA O NETLIFY -->
-    <input type="hidden" name="form-name" value="waitlist">
+  <p>
+    <label>Email *</label><br>
+    <input type="email" name="email" required>
+  </p>
 
-    <p>
-      <label>Nome completo<br>
-        <input type="text" name="name" required>
-      </label>
-    </p>
+  <p>
+    <label>Perfil *</label><br>
+    <select name="perfil" required>
+      <option value="">Selecione</option>
+      <option>Motorista</option>
+      <option>Chapa / Ajudante</option>
+      <option>Transportadora</option>
+      <option>Investidor</option>
+    </select>
+  </p>
 
-    <p>
-      <label>Email<br>
-        <input type="email" name="email" required>
-      </label>
-    </p>
+  <p>
+    <label>
+      <input type="checkbox" required>
+      Li e aceito os <a href="/terms.html">Termos</a> e a <a href="/privacy.html">Política de Privacidade</a>
+    </label>
+  </p>
 
-    <p>
-      <label>Perfil<br>
-        <select name="perfil" required>
-          <option value="">Selecione</option>
-          <option>Motorista</option>
-          <option>Chapa / Ajudante</option>
-          <option>Transportadora</option>
-          <option>Investidor</option>
-        </select>
-      </label>
-    </p>
-
-    <p>
-      <label>
-        <input type="checkbox" name="terms" required>
-        Li e aceito os <a href="/terms.html" target="_blank">Termos</a> e a
-        <a href="/privacy.html" target="_blank">Política de Privacidade</a>
-      </label>
-    </p>
-
+  <p>
     <button type="submit">Entrar no Beta</button>
-  </form>
+  </p>
 
-</body>
-</html>
+</form>
