@@ -1,656 +1,154 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loomper | Logística Automotiva</title>
-    <meta name="description" content="A primeira plataforma operacional da logística automotiva.">
+<script>
+    /* --- VARIÁVEIS GLOBAIS --- */
+    let cidadesValidas = []; // Lista para travar cidades erradas
+
+    /* --- 1. GERAÇÃO ANTECIPADA DE ID --- */
+    // Gera o ID assim que abre o site
+    const randomID = Math.floor(1000 + Math.random() * 9000);
+    const meuID = "LMP-" + randomID;
     
-    <!-- FontAwesome (Ícones) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Fonte Google -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    // 1. Preenche o campo oculto para ir no e-mail do Netlify
+    document.getElementById('idLoomperInput').value = meuID;
+    
+    // 2. Salva no navegador para mostrar na próxima tela
+    localStorage.setItem('meuIdLoomper', meuID);
 
-    <!-- ESTILOS (CSS) EMBUTIDO -->
-    <style>
-        /* --- RESET & VARIÁVEIS --- */
-        :root {
-            --primary-blue: #001A33;
-            --primary-orange: #FF6600; /* Laranja Loomper */
-            --secondary-gray: #F4F4F4;
-            --glass-bg: rgba(0, 0, 0, 0.6);
-            --glass-border: 1px solid rgba(255, 102, 0, 0.3);
+    /* --- 2. LÓGICA DAS ABAS (PERFIS) --- */
+    function openTab(evt, tabName) {
+        var i, tabContent, tabBtn;
+        tabContent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabContent.length; i++) {
+            tabContent[i].style.display = "none";
+            tabContent[i].classList.remove("active");
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
-        body { background-color: var(--primary-blue); color: white; overflow-x: hidden; }
-
-        /* --- HERO SECTION --- */
-        .hero-section {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px;
-            /* Fundo com Overlay Azul Escuro */
-            background: linear-gradient(rgba(0, 26, 51, 0.92), rgba(0, 26, 51, 0.88)), url('assets/images/caminhao_bg.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
+        tabBtn = document.getElementsByClassName("tab-btn");
+        for (i = 0; i < tabBtn.length; i++) {
+            tabBtn[i].className = tabBtn[i].className.replace(" active", "");
         }
-        
-        /* Fallback caso a imagem não carregue, mantém o fundo azul */
-        .hero-section { background-color: var(--primary-blue); }
+        document.getElementById(tabName).style.display = "block";
+        setTimeout(() => document.getElementById(tabName).classList.add("active"), 10);
+        evt.currentTarget.className += " active";
+    }
 
-        .logo-img { max-width: 180px; margin-bottom: 20px; }
+    /* --- 3. TIMELINE DINÂMICA --- */
+    const stepsData = {
+        1: "<h4>1. Cadastre-se</h4><p>Preencha seus dados e escolha seu perfil. É rápido e 100% gratuito para profissionais.</p>",
+        2: "<h4>2. Validação</h4><p>Nossa equipe valida suas informações para garantir a segurança da comunidade.</p>",
+        3: "<h4>3. Receba Ofertas</h4><p>Conecte-se com oportunidades reais ou profissionais qualificados na sua região.</p>",
+        4: "<h4>4. Operação Segura</h4><p>Combine detalhes via chat integrado e realize o serviço com monitoramento.</p>",
+        5: "<h4>5. Avaliação</h4><p>Finalize o serviço e avalie. Construa sua reputação no ecossistema Loomper.</p>"
+    };
+    function setStep(stepNum) {
+        document.getElementById('step-content').innerHTML = stepsData[stepNum];
+        let dots = document.getElementsByClassName('step-dot');
+        for(let d of dots) d.classList.remove('active');
+        dots[stepNum-1].classList.add('active');
+    }
+    setStep(1);
 
-        .hero-content { max-width: 800px; z-index: 2; }
-        .hero-content h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 20px; line-height: 1.2; color: #fff; }
-        .hero-content p { font-size: 1.1rem; margin-bottom: 35px; opacity: 0.9; color: #ddd; }
+    /* --- 4. ACCORDION --- */
+    const details = document.querySelectorAll("details");
+    details.forEach((targetDetail) => {
+        targetDetail.addEventListener("click", () => {
+            details.forEach((detail) => {
+                if (detail !== targetDetail) {
+                    detail.removeAttribute("open");
+                }
+            });
+        });
+    });
 
-        .hero-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; }
+    /* --- 5. FORMULÁRIO E VALIDAÇÕES --- */
+    // a) Detectar Convite na URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const conviteCode = urlParams.get('convite');
+    if(conviteCode) {
+        document.getElementById('codigoIndicacao').value = conviteCode;
+    }
 
-        .btn-primary {
-            background-color: var(--primary-orange);
-            color: white;
-            padding: 15px 30px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            display: inline-block;
-            border: none;
-            cursor: pointer;
-            transition: 0.3s;
-            text-transform: uppercase;
-            font-size: 0.9rem;
+    // b) Mudar Botão de Acordo com Perfil
+    function updateFormCTA() {
+        const perfil = document.getElementById('perfilSelect').value;
+        const btn = document.getElementById('submitBtn');
+        const perfilEmpresa = ['Montadora', 'Seguradora', 'Governo/Órgão Público', 'Investidor'];
+        if (perfilEmpresa.includes(perfil)) {
+            btn.textContent = "SOLICITAR DEMONSTRAÇÃO";
+        } else {
+            btn.textContent = "QUERO SER PIONEIRO";
         }
-        .btn-outline {
-            border: 2px solid var(--primary-orange);
-            color: var(--primary-orange);
-            padding: 13px 28px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: 0.3s;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-        }
-        .btn-primary:hover { transform: scale(1.05); background-color: #e65c00; }
-        .btn-outline:hover { background-color: var(--primary-orange); color: white; }
+    }
 
-        /* --- ABAS INTERATIVAS (PERFIS) --- */
-        .section-container { padding: 80px 20px; max-width: 900px; margin: 0 auto; }
-        .section-title { color: white; text-align: center; margin-bottom: 40px; font-size: 1.8rem; position: relative; }
-        .section-title::after { content: ''; display: block; width: 60px; height: 3px; background: var(--primary-orange); margin: 10px auto 0; }
-        
-        .tabs-header { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; }
-        .tab-btn {
-            background: transparent;
-            border: 1px solid #555;
-            color: #aaa;
-            padding: 12px 25px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .tab-btn:hover { border-color: #888; color: #fff; }
-        .tab-btn.active { border-color: var(--primary-orange); color: var(--primary-orange); background: rgba(255,102,0,0.1); font-weight: bold; }
+    function selectRole(role) {
+        const select = document.getElementById('perfilSelect');
+        select.value = role;
+        updateFormCTA();
+    }
 
-        .tab-content { display: none; text-align: center; background: #0b2441; padding: 40px; border-radius: 15px; border: 1px solid #1c3a5e; animation: fadeIn 0.5s; }
-        .tab-content.active { display: block; }
-        .tab-icon { font-size: 3.5rem; color: var(--primary-orange); margin-bottom: 20px; }
-        .tab-content h3 { font-size: 1.5rem; margin-bottom: 15px; }
-        .tab-content p { color: #ccc; line-height: 1.6; margin-bottom: 25px; }
-        .link-action { color: var(--primary-orange); text-decoration: none; font-weight: bold; display: inline-flex; align-items: center; gap: 5px; }
-        .link-action:hover { text-decoration: underline; }
-
-        /* --- TIMELINE (COMO FUNCIONA) --- */
-        .bg-light { background-color: white; color: var(--primary-blue); border-radius: 15px; }
-        .bg-light .section-title { color: var(--primary-blue); }
-        
-        .timeline-nav { display: flex; align-items: center; justify-content: center; margin-bottom: 30px; padding: 0 10px; }
-        .step-dot { 
-            width: 40px; height: 40px; border-radius: 50%; 
-            border: 2px solid var(--primary-blue); background: white; 
-            color: var(--primary-blue); font-weight: bold; cursor: pointer; 
-            transition: 0.3s; display: flex; align-items: center; justify-content: center;
-        }
-        .step-dot.active { background: var(--primary-orange); color: white; border-color: var(--primary-orange); transform: scale(1.1); }
-        .line { flex-grow: 1; height: 2px; background: #ddd; margin: 0 5px; max-width: 50px; }
-        
-        .step-card { text-align: center; padding: 20px; min-height: 150px; }
-        .step-card h4 { font-size: 1.3rem; margin-bottom: 10px; color: var(--primary-orange); }
-        .step-card p { font-size: 1rem; color: #555; }
-
-        /* --- ACCORDION (STAKEHOLDERS) --- */
-        .section-subtitle { text-align: center; opacity: 0.8; margin-bottom: 30px; margin-top: -30px; }
-        
-        details { background: #0b2441; margin-bottom: 12px; border-radius: 8px; border: 1px solid #1c3a5e; overflow: hidden; transition: 0.3s; }
-        summary { padding: 20px; cursor: pointer; font-weight: 600; list-style: none; display: flex; align-items: center; gap: 15px; font-size: 1.1rem; }
-        summary:hover { background: rgba(255,255,255,0.02); }
-        summary::after { content: '+'; margin-left: auto; font-size: 1.4rem; color: var(--primary-orange); font-weight: 300; }
-        details[open] summary::after { content: '-'; }
-        details[open] summary { background: rgba(255,102,0,0.1); color: var(--primary-orange); border-bottom: 1px solid rgba(255,255,255,0.05); }
-        
-        .details-content { padding: 25px; font-size: 1rem; color: #ccc; line-height: 1.6; }
-        .btn-small { display: inline-block; margin-top: 15px; color: var(--primary-orange); text-decoration: none; font-weight: bold; border: 1px solid var(--primary-orange); padding: 8px 20px; border-radius: 20px; font-size: 0.85rem; transition: 0.3s; }
-        .btn-small:hover { background: var(--primary-orange); color: white; }
-
-        /* --- CARROSSEL (BENEFÍCIOS) --- */
-        .bg-dark { background-color: #050e1a; width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; padding: 60px 0; }
-        .bg-dark .section-container { padding: 0 20px; }
-        .text-orange { color: var(--primary-orange) !important; }
-        .text-orange::after { background: white; }
-
-        .carousel-container { display: flex; overflow-x: auto; gap: 20px; padding: 20px 10px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
-        .carousel-container::-webkit-scrollbar { display: none; }
-        
-        .carousel-card { 
-            min-width: 260px; max-width: 260px; 
-            background: linear-gradient(145deg, #0b2441, #081b33);
-            padding: 30px 20px; border-radius: 15px; 
-            scroll-snap-align: center; text-align: center; 
-            border: 1px solid #1c3a5e; 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-        }
-        .carousel-card h3 { font-size: 1.2rem; margin: 15px 0; color: white; }
-        .carousel-card p { font-size: 0.95rem; color: #aaa; line-height: 1.5; }
-        .icon-orange { font-size: 2.5rem; color: var(--primary-orange); }
-
-        /* --- FORMULÁRIO --- */
-        .form-wrapper { background: white; padding: 40px; border-radius: 15px; color: #333; box-shadow: 0 15px 30px rgba(0,0,0,0.5); }
-        #formulario .section-title { color: var(--primary-blue); }
-        #formulario .section-title::after { background: var(--primary-orange); }
-
-        .input-group { margin-bottom: 20px; text-align: left; }
-        .input-group label { display: block; font-weight: 700; font-size: 0.9rem; margin-bottom: 8px; color: #444; }
-        input, select { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; background: #f9f9f9; outline: none; transition: 0.3s; }
-        input:focus, select:focus { border-color: var(--primary-orange); background: white; box-shadow: 0 0 0 3px rgba(255,102,0,0.1); }
-        
-        .whatsapp-input-wrapper { display: flex; align-items: center; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; background: #f9f9f9; }
-        .whatsapp-input-wrapper:focus-within { border-color: var(--primary-orange); box-shadow: 0 0 0 3px rgba(255,102,0,0.1); }
-        .whatsapp-input-wrapper input { border: none; box-shadow: none; background: transparent; }
-        .prefix { background: #eee; padding: 14px; color: #555; font-weight: bold; border-right: 1px solid #ddd; }
-        
-        .row { display: flex; gap: 15px; }
-        .half { width: 50%; }
-        .full-width { width: 100%; margin-top: 15px; font-size: 1.1rem; padding: 18px; box-shadow: 0 4px 15px rgba(255, 102, 0, 0.3); }
-
-        /* --- APOIE (GLASSMORPHISM) --- */
-        .glass-section { 
-            background: rgba(16, 28, 45, 0.7); 
-            backdrop-filter: blur(12px); 
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.1); 
-            border-radius: 20px; text-align: center; 
-            margin-top: 60px; margin-bottom: 60px;
-        }
-        .gold-text { color: #FFD700; text-shadow: 0 0 15px rgba(255, 215, 0, 0.2); }
-        .support-text { margin-bottom: 30px; color: #ccc; }
-        
-        .donation-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 500px; margin: 0 auto; }
-        .donate-btn { 
-            background: transparent; 
-            border: 1px solid rgba(255,255,255,0.3); 
-            color: white; padding: 18px; border-radius: 12px; 
-            font-size: 1.2rem; cursor: pointer; transition: 0.3s; font-weight: 600;
-        }
-        .donate-btn:hover { border-color: var(--primary-orange); color: var(--primary-orange); background: rgba(255,102,0,0.1); transform: translateY(-3px); }
-        
-        .pix-feedback { margin-top: 25px; animation: fadeIn 0.5s; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; display: none; }
-        .progress-bar { width: 100%; height: 6px; background: #333; margin: 15px 0; border-radius: 3px; overflow: hidden; }
-        .progress-fill { width: 0%; height: 100%; background: var(--primary-orange); animation: progress 3s forwards; }
-        .bank-waiting { font-size: 0.85rem; color: #aaa; animation: pulse 1.5s infinite; margin-top: 5px; }
-
-        /* --- FOOTER --- */
-        footer { background: #02080f; padding: 60px 20px; text-align: center; font-size: 0.9rem; color: #666; border-top: 1px solid #111; }
-        .social-links { margin-bottom: 20px; }
-        .social-links a { color: white; font-size: 1.5rem; margin: 0 10px; transition: 0.3s; }
-        .social-links a:hover { color: var(--primary-orange); }
-        .footer-divider { border: 0; border-top: 1px solid #222; margin: 30px auto; max-width: 300px; }
-        .legal-info p { margin-bottom: 8px; font-size: 0.85rem; }
-        .legal-info strong { color: #aaa; }
-        footer a { color: #888; text-decoration: none; }
-        
-        .whatsapp-float { 
-            position: fixed; bottom: 25px; right: 25px; 
-            background: #25D366; color: white; 
-            width: 65px; height: 65px; border-radius: 50%; 
-            display: flex; align-items: center; justify-content: center; 
-            font-size: 2.2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.4); 
-            z-index: 1000; text-decoration: none; transition: 0.3s;
-        }
-        .whatsapp-float:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6); }
-
-        /* --- ANIMAÇÕES --- */
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes progress { to { width: 90%; } }
-        @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
-
-        /* MOBILE */
-        @media (max-width: 480px) {
-            .hero-content h1 { font-size: 1.8rem; }
-            .tabs-header { gap: 10px; }
-            .tab-btn { width: 100%; justify-content: center; }
-            .input-group.half { width: 100%; }
-            .row { flex-direction: column; gap: 0; }
-        }
-        
-        .hidden { display: none !important; }
-    </style>
-</head>
-<body>
-
-    <!-- HERO SECTION -->
-    <header id="hero" class="hero-section">
-        <nav class="navbar">
-            <div class="logo-container">
-                <!-- Se a imagem falhar, mostra o texto -->
-                <img src="assets/images/logotipo.png" alt="Loomper" class="logo-img" onerror="this.style.display='none'; document.getElementById('logo-text').style.display='block';">
-                <span id="logo-text" style="display:none; color:white; font-weight:700; font-size:2rem; letter-spacing: 2px;">LOOMPER</span>
-            </div>
-        </nav>
-
-        <div class="hero-content">
-            <h1>Loomper: A primeira plataforma operacional da logística automotiva.</h1>
-            <p>Conectamos motoristas de cegonha a chapas, ajudantes e transportadoras de veículos.</p>
-            
-            <div class="hero-buttons">
-                <a href="#formulario" class="btn-primary">QUERO SER PIONEIRO</a>
-                <a href="#perfis" class="btn-outline">Ver na Prática</a>
-            </div>
-        </div>
-    </header>
-
-    <!-- SEÇÃO PERFIS (ABAS INTERATIVAS) -->
-    <section id="perfis" class="section-container">
-        <h2 class="section-title">Três Perfis. Uma Plataforma.</h2>
-        
-        <div class="tabs-header">
-            <button class="tab-btn active" onclick="openTab(event, 'tab-motorista')">
-                <i class="fa-solid fa-steering-wheel"></i> Motorista
-            </button>
-            <button class="tab-btn" onclick="openTab(event, 'tab-chapa')">
-                <i class="fa-solid fa-helmet-safety"></i> Chapa
-            </button>
-            <button class="tab-btn" onclick="openTab(event, 'tab-empresa')">
-                <i class="fa-regular fa-building"></i> Empresa
-            </button>
-        </div>
-
-        <!-- Conteúdo Motorista -->
-        <div id="tab-motorista" class="tab-content active">
-            <i class="fa-solid fa-truck-front tab-icon"></i> <!-- Ícone outline de caminhão -->
-            <h3>Motorista Cegonheiro</h3>
-            <p>Encontre chapas qualificados rapidamente. Gerencie sua operação com segurança e transparência.</p>
-            <a href="#como-funciona" class="link-action">Ver simulação <i class="fa-solid fa-arrow-right"></i></a>
-        </div>
-
-        <!-- Conteúdo Chapa -->
-        <div id="tab-chapa" class="tab-content">
-            <i class="fa-solid fa-helmet-safety tab-icon"></i> <!-- Ícone outline de capacete -->
-            <h3>Chapa / Ajudante</h3>
-            <p>Construa seu histórico profissional. Receba oportunidades direto no celular. 100% gratuito.</p>
-            <a href="#como-funciona" class="link-action">Ver simulação <i class="fa-solid fa-arrow-right"></i></a>
-        </div>
-
-        <!-- Conteúdo Empresa -->
-        <div id="tab-empresa" class="tab-content">
-            <i class="fa-regular fa-building tab-icon"></i> <!-- Ícone outline de prédio -->
-            <h3>Transportadora</h3>
-            <p>Gerencie toda operação. Relatórios ESG automáticos e Compliance OEA.</p>
-            <a href="#como-funciona" class="link-action">Ver simulação <i class="fa-solid fa-arrow-right"></i></a>
-        </div>
-    </section>
-
-    <!-- SEÇÃO COMO FUNCIONA (TIMELINE HORIZONTAL) -->
-    <section id="como-funciona" class="section-container bg-light">
-        <h2 class="section-title">Como Funciona na Prática</h2>
-        
-        <div class="timeline-nav">
-            <button class="step-dot active" onclick="setStep(1)">1</button>
-            <div class="line"></div>
-            <button class="step-dot" onclick="setStep(2)">2</button>
-            <div class="line"></div>
-            <button class="step-dot" onclick="setStep(3)">3</button>
-            <div class="line"></div>
-            <button class="step-dot" onclick="setStep(4)">4</button>
-            <div class="line"></div>
-            <button class="step-dot" onclick="setStep(5)">5</button>
-        </div>
-
-        <div id="step-content" class="step-card">
-            <!-- Conteúdo injetado via JS -->
-        </div>
-    </section>
-
-    <!-- SEÇÃO STAKEHOLDERS (ACCORDION VERTICAL) -->
-    <section class="section-container">
-        <h2 class="section-title">Ecossistema Aberto</h2>
-        <p class="section-subtitle">Modelos de negócio adaptados para toda a cadeia.</p>
-
-        <div class="accordion">
-            <!-- Transportadora -->
-            <details name="stakeholders" open>
-                <summary><i class="fa-regular fa-building"></i> Transportadoras</summary>
-                <div class="details-content">
-                    <p>Gerencie toda operação. Relatórios ESG automáticos. Compliance OEA. Otimize custos.</p>
-                    <a href="#formulario" onclick="selectRole('Transportadora')" class="btn-small">Solicitar Demo</a>
-                </div>
-            </details>
-
-            <!-- Montadoras -->
-            <details name="stakeholders">
-                <summary><i class="fa-solid fa-industry"></i> Montadoras</summary>
-                <div class="details-content">
-                    <p>Conecte sua produção diretamente aos transportadores. Otimize a logística de distribuição.</p>
-                    <a href="#formulario" onclick="selectRole('Montadora')" class="btn-small">Solicitar Demo</a>
-                </div>
-            </details>
-
-            <!-- Seguradoras -->
-            <details name="stakeholders">
-                <summary><i class="fa-solid fa-shield-halved"></i> Seguradoras</summary>
-                <div class="details-content">
-                    <p>Reduza sinistralidade. Precifique com dados reais. Agilize liquidação de sinistros.</p>
-                    <a href="#formulario" onclick="selectRole('Seguradora')" class="btn-small">Solicitar Demo</a>
-                </div>
-            </details>
-
-            <!-- Governo -->
-            <details name="stakeholders">
-                <summary><i class="fa-solid fa-landmark"></i> Governo / Social</summary>
-                <div class="details-content">
-                    <p>Inclusão digital e dignidade para ~80 mil trabalhadores hoje invisíveis. Formalização e segurança viária.</p>
-                    <a href="#formulario" onclick="selectRole('Governo/Órgão Público')" class="btn-small">Solicitar Demo</a>
-                </div>
-            </details>
-
-            <!-- Investidor -->
-            <details name="stakeholders">
-                <summary><i class="fa-solid fa-dollar-sign"></i> Investidor</summary>
-                <div class="details-content">
-                    <p>Potencial de +3 milhões de conexões/ano (Novos e Seminovos). Modelo Asset Light. Validado no Brasil, escalável LATAM.</p>
-                    <a href="#formulario" onclick="selectRole('Investidor')" class="btn-small">Ver Pitch Deck</a>
-                </div>
-            </details>
-        </div>
-    </section>
-
-    <!-- BENEFÍCIOS (CARROSSEL SWIPE) -->
-    <section class="section-container bg-dark">
-        <h2 class="section-title text-orange">Seja um Pioneiro</h2>
-        
-        <div class="carousel-container">
-            <!-- Card 1 -->
-            <div class="carousel-card">
-                <i class="fa-solid fa-medal icon-orange"></i>
-                <h3>Selo Pioneiro</h3>
-                <p>Badge vitalício no seu perfil. Destaque-se para sempre.</p>
-            </div>
-            <!-- Card 2 -->
-            <div class="carousel-card">
-                <i class="fa-solid fa-gift icon-orange"></i>
-                <h3>Clube de Vantagens</h3>
-                <p>Descontos exclusivos com nossos parceiros.</p>
-            </div>
-            <!-- Card 3 -->
-            <div class="carousel-card">
-                <i class="fa-solid fa-rocket icon-orange"></i>
-                <h3>Acesso Antecipado</h3>
-                <p>Use as funcionalidades antes de todo o mercado.</p>
-            </div>
-            <!-- Card 4 -->
-            <div class="carousel-card">
-                <i class="fa-solid fa-chart-line icon-orange"></i>
-                <h3>Histórico Desde o Dia 1</h3>
-                <p>Sua reputação começa a ser construída agora.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- FORMULÁRIO INTELIGENTE -->
-    <section id="formulario" class="section-container">
-        <div class="form-wrapper">
-            <h2 class="section-title">Cadastro Beta</h2>
-            
-            <form name="cadastro-beta" method="POST" data-netlify="true" action="/sucesso.html" id="loomperForm">
-                
-                <!-- 1. CAMPO GATILHO (PRIMEIRO) -->
-                <div class="input-group">
-                    <label>Você é: *</label>
-                    <select name="perfil" id="perfilSelect" required onchange="updateFormCTA()">
-                        <option value="" disabled selected>Selecione seu perfil...</option>
-                        <option value="Motorista Cegonheiro">Motorista Cegonheiro</option>
-                        <option value="Chapa/Ajudante">Chapa / Ajudante</option>
-                        <option value="Transportadora">Transportadora</option>
-                        <option value="Montadora">Montadora</option>
-                        <option value="Seguradora">Seguradora</option>
-                        <option value="Governo/Órgão Público">Governo / Órgão Público</option>
-                        <option value="Investidor">Investidor</option>
-                    </select>
-                </div>
-
-                <div class="input-group">
-                    <label>Nome Completo *</label>
-                    <input type="text" name="nome" required placeholder="Digite seu nome">
-                </div>
-
-                <div class="input-group">
-                    <label>WhatsApp *</label>
-                    <div class="whatsapp-input-wrapper">
-                        <span class="prefix">+55</span>
-                        <input type="tel" name="whatsapp" id="whatsappInput" required placeholder="(11) 99999-9999">
-                    </div>
-                </div>
-
-                <div class="input-group">
-                    <label>E-mail *</label>
-                    <input type="email" name="email" required placeholder="seu@email.com">
-                </div>
-
-                <div class="row">
-                    <div class="input-group half">
-                        <label>Estado (UF) *</label>
-                        <select name="estado" id="estadoSelect" required>
-                            <option value="">UF</option>
-                        </select>
-                    </div>
-                    <div class="input-group half">
-                        <label>Cidade *</label>
-                        <input type="text" name="cidade" id="cidadeInput" list="cidadesList" required placeholder="Digite a cidade...">
-                        <datalist id="cidadesList"></datalist>
-                    </div>
-                </div>
-
-                <!-- CAMPO OCULTO PARA CÓDIGO DE INDICAÇÃO -->
-                <input type="hidden" name="codigo_indicacao" id="codigoIndicacao">
-
-                <button type="submit" class="btn-primary full-width" id="submitBtn">QUERO SER PIONEIRO</button>
-            </form>
-        </div>
-    </section>
-
-    <!-- APOIE (FINTECH STYLE) -->
-    <section class="section-container glass-section">
-        <h2 class="section-title gold-text">Apoie quem Move</h2>
-        <p class="support-text">Fortaleça o ecossistema. Contribuição voluntária.</p>
-        
-        <div class="donation-grid">
-            <button class="donate-btn" onclick="copyPix('20.00')">R$ 20</button>
-            <button class="donate-btn" onclick="copyPix('50.00')">R$ 50</button>
-            <button class="donate-btn" onclick="copyPix('100.00')">R$ 100</button>
-            <button class="donate-btn" onclick="copyPix('Outro')">Outro Valor</button>
-        </div>
-
-        <div id="pix-feedback" class="pix-feedback hidden">
-            <p><i class="fa-solid fa-check"></i> Chave PIX copiada!</p>
-            <div class="progress-bar"><div class="progress-fill"></div></div>
-            <p class="bank-waiting">Aguardando confirmação do banco...</p>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer>
-        <div class="footer-content">
-            <div class="social-links">
-                <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                <a href="#"><i class="fa-brands fa-linkedin"></i></a>
-            </div>
-            <p>Contato: <a href="mailto:contato@loomper.com.br">contato@loomper.com.br</a></p>
-            <hr class="footer-divider">
-            <div class="legal-info">
-                <p>&copy; 2025 Loomper. Todos os direitos reservados.</p>
-                <p>Gestão: <strong>Ajud.ai Brasil Inova Simples (i.s.)</strong></p>
-                <p>CNPJ: 59.150.688/0001-39 | São Bernardo do Campo-SP</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- BOTÃO FLUTUANTE WHATSAPP -->
-    <a href="https://wa.me/5511965858142" class="whatsapp-float" target="_blank">
-        <i class="fa-brands fa-whatsapp"></i>
-    </a>
-
-    <!-- SCRIPTS (JAVASCRIPT EMBUTIDO) -->
-    <script>
-        /* --- 1. LÓGICA DAS ABAS (PERFIS) --- */
-        function openTab(evt, tabName) {
-            var i, tabContent, tabBtn;
-            tabContent = document.getElementsByClassName("tab-content");
-            for (i = 0; i < tabContent.length; i++) {
-                tabContent[i].style.display = "none";
-                tabContent[i].classList.remove("active");
-            }
-            tabBtn = document.getElementsByClassName("tab-btn");
-            for (i = 0; i < tabBtn.length; i++) {
-                tabBtn[i].className = tabBtn[i].className.replace(" active", "");
-            }
-            document.getElementById(tabName).style.display = "block";
-            // Adiciona classe active para animação
-            setTimeout(() => document.getElementById(tabName).classList.add("active"), 10);
-            evt.currentTarget.className += " active";
-        }
-
-        /* --- 2. TIMELINE DINÂMICA (COMO FUNCIONA) --- */
-        const stepsData = {
-            1: "<h4>1. Cadastre-se</h4><p>Preencha seus dados e escolha seu perfil. É rápido e 100% gratuito para profissionais.</p>",
-            2: "<h4>2. Validação</h4><p>Nossa equipe valida suas informações para garantir a segurança da comunidade.</p>",
-            3: "<h4>3. Receba Ofertas</h4><p>Conecte-se com oportunidades reais ou profissionais qualificados na sua região.</p>",
-            4: "<h4>4. Operação Segura</h4><p>Combine detalhes via chat integrado e realize o serviço com monitoramento.</p>",
-            5: "<h4>5. Avaliação</h4><p>Finalize o serviço e avalie. Construa sua reputação no ecossistema Loomper.</p>"
-        };
-
-        function setStep(stepNum) {
-            document.getElementById('step-content').innerHTML = stepsData[stepNum];
-            let dots = document.getElementsByClassName('step-dot');
-            for(let d of dots) d.classList.remove('active');
-            dots[stepNum-1].classList.add('active');
-        }
-        // Iniciar no passo 1
-        setStep(1);
-
-        /* --- 3. AUTO-FECHAMENTO ACCORDION --- */
-        const details = document.querySelectorAll("details");
-        details.forEach((targetDetail) => {
-            targetDetail.addEventListener("click", () => {
-                details.forEach((detail) => {
-                    if (detail !== targetDetail) {
-                        detail.removeAttribute("open");
-                    }
-                });
+    /* --- 6. API IBGE + TRAVA DE SEGURANÇA --- */
+    fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome')
+        .then(res => res.json())
+        .then(estados => {
+            const selectUF = document.getElementById('estadoSelect');
+            estados.forEach(uf => {
+                const option = document.createElement('option');
+                option.value = uf.sigla;
+                option.textContent = uf.sigla;
+                selectUF.appendChild(option);
             });
         });
 
-        /* --- 4. FORMULÁRIO INTELIGENTE --- */
-        // a) Detectar Convite na URL (?convite=CODIGO)
-        const urlParams = new URLSearchParams(window.location.search);
-        const conviteCode = urlParams.get('convite');
-        if(conviteCode) {
-            document.getElementById('codigoIndicacao').value = conviteCode;
-        }
+    document.getElementById('estadoSelect').addEventListener('change', function() {
+        const uf = this.value;
+        const cidadeInput = document.getElementById('cidadeInput');
+        cidadeInput.value = ""; // Limpa cidade ao trocar estado
+        cidadesValidas = []; // Zera lista de validação
 
-        // b) Mudar Botão de Acordo com Perfil
-        function updateFormCTA() {
-            const perfil = document.getElementById('perfilSelect').value;
-            const btn = document.getElementById('submitBtn');
-            
-            const perfilEmpresa = ['Montadora', 'Seguradora', 'Governo/Órgão Público', 'Investidor'];
-            
-            if (perfilEmpresa.includes(perfil)) {
-                btn.textContent = "SOLICITAR DEMONSTRAÇÃO";
-            } else {
-                btn.textContent = "QUERO SER PIONEIRO";
-            }
-        }
-
-        // c) Função para pré-selecionar perfil vindo do Accordion
-        function selectRole(role) {
-            const select = document.getElementById('perfilSelect');
-            select.value = role;
-            updateFormCTA();
-        }
-
-        /* --- 5. COPIAR PIX (APOIE) --- */
-        function copyPix(valor) {
-            // Chave PIX oficial
-            const pixKey = "contato@loomper.com.br"; 
-            
-            navigator.clipboard.writeText(pixKey).then(() => {
-                // Feedback Visual
-                const feedback = document.getElementById('pix-feedback');
-                feedback.classList.remove('hidden');
-                feedback.style.display = 'block';
-                
-                // Esconder feedback após 6s
-                setTimeout(() => {
-                    feedback.style.display = 'none';
-                }, 6000);
-            });
-        }
-
-        /* --- 6. API IBGE (ESTADOS E CIDADES) --- */
-        fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome')
+        if(!uf) return;
+        
+        fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`)
             .then(res => res.json())
-            .then(estados => {
-                const selectUF = document.getElementById('estadoSelect');
-                estados.forEach(uf => {
+            .then(cidades => {
+                const dataList = document.getElementById('cidadesList');
+                dataList.innerHTML = '';
+                cidades.forEach(cidade => {
+                    // Adiciona na lista visual
                     const option = document.createElement('option');
-                    option.value = uf.sigla;
-                    option.textContent = uf.sigla;
-                    selectUF.appendChild(option);
+                    option.value = cidade.nome;
+                    dataList.appendChild(option);
+                    // Adiciona na lista de segurança (memória)
+                    cidadesValidas.push(cidade.nome);
                 });
             });
+    });
 
-        document.getElementById('estadoSelect').addEventListener('change', function() {
-            const uf = this.value;
-            if(!uf) return;
-            
-            fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`)
-                .then(res => res.json())
-                .then(cidades => {
-                    const dataList = document.getElementById('cidadesList');
-                    dataList.innerHTML = ''; // Limpar
-                    cidades.forEach(cidade => {
-                        const option = document.createElement('option');
-                        option.value = cidade.nome;
-                        dataList.appendChild(option);
-                    });
-                });
+    // 🚨 INTERCEPTAR O ENVIO PARA VALIDAR CIDADE 🚨
+    document.getElementById('loomperForm').addEventListener('submit', function(e) {
+        const cidadeDigitada = document.getElementById('cidadeInput').value;
+        const estadoSelecionado = document.getElementById('estadoSelect').value;
+
+        // Se tem estado selecionado, mas a cidade não está na lista oficial do IBGE
+        if (estadoSelecionado && !cidadesValidas.includes(cidadeDigitada)) {
+            e.preventDefault(); // CANCELA O ENVIO
+            alert(`Erro: A cidade "${cidadeDigitada}" não pertence ao estado ${estadoSelecionado}. Por favor, selecione uma cidade válida da lista.`);
+            document.getElementById('cidadeInput').focus();
+            return false;
+        }
+        // Se passou, o Netlify envia normalmente
+    });
+
+    /* --- 7. EXTRAS --- */
+    function copyPix(valor) {
+        const pixKey = "contato@loomper.com.br"; 
+        navigator.clipboard.writeText(pixKey).then(() => {
+            const feedback = document.getElementById('pix-feedback');
+            feedback.classList.remove('hidden');
+            feedback.style.display = 'block';
+            setTimeout(() => { feedback.style.display = 'none'; }, 6000);
         });
+    }
 
-        /* --- 7. MÁSCARA WHATSAPP --- */
-        document.getElementById('whatsappInput').addEventListener('input', function (e) {
-            let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
-            e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
-        });
-    </script>
-</body>
-</html>
-
+    document.getElementById('whatsappInput').addEventListener('input', function (e) {
+        let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
+        e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
+    });
+</script>
