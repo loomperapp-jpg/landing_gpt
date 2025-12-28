@@ -1,48 +1,292 @@
-<form 
-  name="waitlist"
-  method="POST"
-  action="/sucesso.html"
-  data-netlify="true"
-  netlify-honeypot="bot-field"
->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loomper | Logística Automotiva</title>
+    <meta name="description" content="A primeira plataforma operacional da logística automotiva.">
+    
+    <!-- FontAwesome (Ícones) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Fonte Google -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-  <input type="hidden" name="form-name" value="waitlist">
+    <!-- HERO SECTION -->
+    <header id="hero" class="hero-section">
+        <nav class="navbar">
+            <div class="logo-container">
+                <!-- ATENÇÃO: Verifique se o nome do arquivo é 'logotipo.png' ou 'Logotipo.png' no servidor -->
+                <img src="assets/images/logotipo.png" alt="Loomper Logo" class="logo-img" onerror="this.style.display='none'; document.getElementById('logo-text').style.display='block';">
+                <span id="logo-text" style="display:none; color:white; font-weight:bold; font-size:1.5rem;">LOOMPER</span>
+            </div>
+        </nav>
 
-  <!-- Honeypot -->
-  <p style="display:none;">
-    <label>Não preencha: <input name="bot-field"></label>
-  </p>
+        <div class="hero-content">
+            <h1>Loomper: A primeira plataforma operacional da logística automotiva.</h1>
+            <p>Conectamos motoristas de cegonha a chapas, ajudantes e transportadoras de veículos.</p>
+            
+            <div class="hero-buttons">
+                <a href="#formulario" class="btn-primary">QUERO SER PIONEIRO</a>
+                <a href="#perfis" class="btn-outline">Ver na Prática</a>
+            </div>
+        </div>
+    </header>
 
-  <p>
-    <label>Nome completo *</label><br>
-    <input type="text" name="name" required>
-  </p>
+    <!-- SEÇÃO PERFIS (ABAS INTERATIVAS) -->
+    <section id="perfis" class="section-container">
+        <h2 class="section-title">Três Perfis. Uma Plataforma.</h2>
+        
+        <div class="tabs-header">
+            <button class="tab-btn active" onclick="openTab(event, 'tab-motorista')">
+                <i class="fa-solid fa-steering-wheel"></i> Motorista
+            </button>
+            <button class="tab-btn" onclick="openTab(event, 'tab-chapa')">
+                <i class="fa-solid fa-helmet-safety"></i> Chapa
+            </button>
+            <button class="tab-btn" onclick="openTab(event, 'tab-empresa')">
+                <i class="fa-regular fa-building"></i> Empresa
+            </button>
+        </div>
 
-  <p>
-    <label>Email *</label><br>
-    <input type="email" name="email" required>
-  </p>
+        <!-- Conteúdo Motorista -->
+        <div id="tab-motorista" class="tab-content active">
+            <i class="fa-solid fa-truck-front tab-icon"></i>
+            <h3>Motorista Cegonheiro</h3>
+            <p>Encontre chapas qualificados rapidamente. Gerencie sua operação com segurança e transparência.</p>
+            <a href="#como-funciona" class="link-action">Ver simulação <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
 
-  <p>
-    <label>Perfil *</label><br>
-    <select name="perfil" required>
-      <option value="">Selecione</option>
-      <option>Motorista</option>
-      <option>Chapa / Ajudante</option>
-      <option>Transportadora</option>
-      <option>Investidor</option>
-    </select>
-  </p>
+        <!-- Conteúdo Chapa -->
+        <div id="tab-chapa" class="tab-content">
+            <i class="fa-solid fa-helmet-safety tab-icon"></i>
+            <h3>Chapa / Ajudante</h3>
+            <p>Construa seu histórico profissional. Receba oportunidades direto no celular. 100% gratuito.</p>
+            <a href="#como-funciona" class="link-action">Ver simulação <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
 
-  <p>
-    <label>
-      <input type="checkbox" required>
-      Li e aceito os <a href="/terms.html">Termos</a> e a <a href="/privacy.html">Política de Privacidade</a>
-    </label>
-  </p>
+        <!-- Conteúdo Empresa -->
+        <div id="tab-empresa" class="tab-content">
+            <i class="fa-regular fa-building tab-icon"></i>
+            <h3>Transportadora</h3>
+            <p>Gerencie toda operação. Relatórios ESG automáticos e Compliance OEA.</p>
+            <a href="#como-funciona" class="link-action">Ver simulação <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+    </section>
 
-  <p>
-    <button type="submit">Entrar no Beta</button>
-  </p>
+    <!-- SEÇÃO COMO FUNCIONA (TIMELINE HORIZONTAL) -->
+    <section id="como-funciona" class="section-container bg-light">
+        <h2 class="section-title">Como Funciona na Prática</h2>
+        
+        <div class="timeline-nav">
+            <button class="step-dot active" onclick="setStep(1)">1</button>
+            <div class="line"></div>
+            <button class="step-dot" onclick="setStep(2)">2</button>
+            <div class="line"></div>
+            <button class="step-dot" onclick="setStep(3)">3</button>
+            <div class="line"></div>
+            <button class="step-dot" onclick="setStep(4)">4</button>
+            <div class="line"></div>
+            <button class="step-dot" onclick="setStep(5)">5</button>
+        </div>
 
-</form>
+        <div id="step-content" class="step-card">
+            <!-- Conteúdo injetado via JS -->
+        </div>
+    </section>
+
+    <!-- SEÇÃO STAKEHOLDERS (ACCORDION VERTICAL) -->
+    <section class="section-container">
+        <h2 class="section-title">Ecossistema Aberto</h2>
+        <p class="section-subtitle">Modelos de negócio adaptados para toda a cadeia.</p>
+
+        <div class="accordion">
+            <!-- Transportadora -->
+            <details name="stakeholders" open>
+                <summary><i class="fa-regular fa-building"></i> Transportadoras</summary>
+                <div class="details-content">
+                    <p>Gerencie toda operação. Relatórios ESG automáticos. Compliance OEA. Otimize custos.</p>
+                    <a href="#formulario" onclick="selectRole('Transportadora')" class="btn-small">Solicitar Demo</a>
+                </div>
+            </details>
+
+            <!-- Montadoras -->
+            <details name="stakeholders">
+                <summary><i class="fa-solid fa-industry"></i> Montadoras</summary>
+                <div class="details-content">
+                    <p>Conecte sua produção diretamente aos transportadores. Otimize a logística de distribuição.</p>
+                    <a href="#formulario" onclick="selectRole('Montadora')" class="btn-small">Solicitar Demo</a>
+                </div>
+            </details>
+
+            <!-- Seguradoras -->
+            <details name="stakeholders">
+                <summary><i class="fa-solid fa-shield-halved"></i> Seguradoras</summary>
+                <div class="details-content">
+                    <p>Reduza sinistralidade. Precifique com dados reais. Agilize liquidação de sinistros.</p>
+                    <a href="#formulario" onclick="selectRole('Seguradora')" class="btn-small">Solicitar Demo</a>
+                </div>
+            </details>
+
+            <!-- Governo -->
+            <details name="stakeholders">
+                <summary><i class="fa-solid fa-landmark"></i> Governo / Social</summary>
+                <div class="details-content">
+                    <p>Inclusão digital e dignidade para ~80 mil trabalhadores hoje invisíveis. Formalização e segurança viária.</p>
+                    <a href="#formulario" onclick="selectRole('Governo/Órgão Público')" class="btn-small">Solicitar Demo</a>
+                </div>
+            </details>
+
+            <!-- Investidor -->
+            <details name="stakeholders">
+                <summary><i class="fa-solid fa-dollar-sign"></i> Investidor</summary>
+                <div class="details-content">
+                    <p>Potencial de +3 milhões de conexões/ano (Novos e Seminovos). Modelo Asset Light. Validado no Brasil, escalável LATAM.</p>
+                    <a href="#formulario" onclick="selectRole('Investidor')" class="btn-small">Ver Pitch Deck</a>
+                </div>
+            </details>
+        </div>
+    </section>
+
+    <!-- BENEFÍCIOS (CARROSSEL SWIPE) -->
+    <section class="section-container bg-dark">
+        <h2 class="section-title text-orange">Seja um Pioneiro</h2>
+        
+        <div class="carousel-container">
+            <!-- Card 1 -->
+            <div class="carousel-card">
+                <i class="fa-solid fa-medal icon-orange"></i>
+                <h3>Selo Pioneiro</h3>
+                <p>Badge vitalício no seu perfil. Destaque-se para sempre.</p>
+            </div>
+            <!-- Card 2 -->
+            <div class="carousel-card">
+                <i class="fa-solid fa-gift icon-orange"></i>
+                <h3>Clube de Vantagens</h3>
+                <p>Descontos exclusivos com nossos parceiros.</p>
+            </div>
+            <!-- Card 3 -->
+            <div class="carousel-card">
+                <i class="fa-solid fa-rocket icon-orange"></i>
+                <h3>Acesso Antecipado</h3>
+                <p>Use as funcionalidades antes de todo o mercado.</p>
+            </div>
+            <!-- Card 4 -->
+            <div class="carousel-card">
+                <i class="fa-solid fa-chart-line icon-orange"></i>
+                <h3>Histórico Desde o Dia 1</h3>
+                <p>Sua reputação começa a ser construída agora.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FORMULÁRIO INTELIGENTE -->
+    <section id="formulario" class="section-container">
+        <div class="form-wrapper">
+            <h2 class="section-title">Cadastro Beta</h2>
+            
+            <form name="cadastro-beta" method="POST" data-netlify="true" id="loomperForm">
+                
+                <!-- 1. CAMPO GATILHO (PRIMEIRO) -->
+                <div class="input-group">
+                    <label>Você é: *</label>
+                    <select name="perfil" id="perfilSelect" required onchange="updateFormCTA()">
+                        <option value="" disabled selected>Selecione seu perfil...</option>
+                        <option value="Motorista Cegonheiro">Motorista Cegonheiro</option>
+                        <option value="Chapa/Ajudante">Chapa / Ajudante</option>
+                        <option value="Transportadora">Transportadora</option>
+                        <option value="Montadora">Montadora</option>
+                        <option value="Seguradora">Seguradora</option>
+                        <option value="Governo/Órgão Público">Governo / Órgão Público</option>
+                        <option value="Investidor">Investidor</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Nome Completo *</label>
+                    <input type="text" name="nome" required placeholder="Digite seu nome">
+                </div>
+
+                <div class="input-group">
+                    <label>WhatsApp *</label>
+                    <div class="whatsapp-input-wrapper">
+                        <span class="prefix">+55</span>
+                        <input type="tel" name="whatsapp" id="whatsappInput" required placeholder="(11) 99999-9999">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>E-mail *</label>
+                    <input type="email" name="email" required placeholder="seu@email.com">
+                </div>
+
+                <div class="row">
+                    <div class="input-group half">
+                        <label>Estado (UF) *</label>
+                        <select name="estado" id="estadoSelect" required>
+                            <option value="">UF</option>
+                        </select>
+                    </div>
+                    <div class="input-group half">
+                        <label>Cidade *</label>
+                        <input type="text" name="cidade" id="cidadeInput" list="cidadesList" required placeholder="Digite a cidade...">
+                        <datalist id="cidadesList"></datalist>
+                    </div>
+                </div>
+
+                <!-- CAMPO OCULTO PARA CÓDIGO DE INDICAÇÃO -->
+                <input type="hidden" name="codigo_indicacao" id="codigoIndicacao">
+
+                <button type="submit" class="btn-primary full-width" id="submitBtn">QUERO SER PIONEIRO</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- APOIE (FINTECH STYLE) -->
+    <section class="section-container glass-section">
+        <h2 class="section-title gold-text">Apoie quem Move</h2>
+        <p class="support-text">Fortaleça o ecossistema. Contribuição voluntária.</p>
+        
+        <div class="donation-grid">
+            <button class="donate-btn" onclick="copyPix('20.00')">R$ 20</button>
+            <button class="donate-btn" onclick="copyPix('50.00')">R$ 50</button>
+            <button class="donate-btn" onclick="copyPix('100.00')">R$ 100</button>
+            <button class="donate-btn" onclick="copyPix('Outro')">Outro Valor</button>
+        </div>
+
+        <div id="pix-feedback" class="pix-feedback hidden">
+            <p><i class="fa-solid fa-check"></i> Chave PIX copiada!</p>
+            <div class="progress-bar"><div class="progress-fill"></div></div>
+            <p class="bank-waiting">Aguardando confirmação do banco...</p>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="social-links">
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+            </div>
+            <p>Contato: <a href="mailto:contato@loomper.com.br">contato@loomper.com.br</a></p>
+            <hr class="footer-divider">
+            <div class="legal-info">
+                <p>&copy; 2025 Loomper. Todos os direitos reservados.</p>
+                <p>Gestão: <strong>Ajud.ai Brasil Inova Simples (i.s.)</strong></p>
+                <p>CNPJ: 59.150.688/0001-39 | São Bernardo do Campo-SP</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- BOTÃO FLUTUANTE WHATSAPP -->
+    <a href="https://wa.me/5511965858142" class="whatsapp-float" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- SCRIPTS -->
+    <script src="script.js"></script>
+</body>
+</html>
