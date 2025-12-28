@@ -252,5 +252,31 @@
 
         console.log('🎉 Bem-vindo ao Loomper! ID Gerado: ' + finalID);
     </script>
+    <script>
+    // 1. Recuperar o ID que foi gerado na Home e enviado por e-mail
+    // Se por acaso não tiver (acesso direto), gera um novo de backup
+    let finalID = localStorage.getItem('meuIdLoomper');
+    
+    if (!finalID) {
+        const randomID = Math.floor(1000 + Math.random() * 9000);
+        finalID = "LMP-" + randomID;
+    }
+    
+    // 2. Exibir ID na tela
+    document.getElementById('memberID').textContent = finalID;
+
+    // 3. Configurar Link de Compartilhamento Viral
+    const siteUrl = "https://www.loomper.com.br"; 
+    
+    // Mensagem persuasiva para o amigo
+    const msg = `Olá! Acabei de me cadastrar como Pioneiro na Loomper (Logística Automotiva). 🚛\n\nÉ gratuito para profissionais. Use meu código para entrar também:\n👉 ${siteUrl}?convite=${finalID}`;
+    
+    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
+    
+    // Injetar no botão
+    document.getElementById('shareBtn').href = whatsappUrl;
+
+    console.log('🎉 Bem-vindo ao Loomper! ID Confirmado: ' + finalID);
+</script>
 </body>
 </html>
