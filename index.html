@@ -10,8 +10,240 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Fonte Google -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- CSS -->
-    <link rel="stylesheet" href="style.css">
+
+    <!-- ESTILOS (CSS) EMBUTIDO -->
+    <style>
+        /* --- RESET & VARIÁVEIS --- */
+        :root {
+            --primary-blue: #001A33;
+            --primary-orange: #FF6600; /* Laranja Loomper */
+            --secondary-gray: #F4F4F4;
+            --glass-bg: rgba(0, 0, 0, 0.6);
+            --glass-border: 1px solid rgba(255, 102, 0, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+        body { background-color: var(--primary-blue); color: white; overflow-x: hidden; }
+
+        /* --- HERO SECTION --- */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            /* Fundo com Overlay Azul Escuro */
+            background: linear-gradient(rgba(0, 26, 51, 0.92), rgba(0, 26, 51, 0.88)), url('assets/images/caminhao_bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        
+        /* Fallback caso a imagem não carregue, mantém o fundo azul */
+        .hero-section { background-color: var(--primary-blue); }
+
+        .logo-img { max-width: 180px; margin-bottom: 20px; }
+
+        .hero-content { max-width: 800px; z-index: 2; }
+        .hero-content h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 20px; line-height: 1.2; color: #fff; }
+        .hero-content p { font-size: 1.1rem; margin-bottom: 35px; opacity: 0.9; color: #ddd; }
+
+        .hero-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; }
+
+        .btn-primary {
+            background-color: var(--primary-orange);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+        .btn-outline {
+            border: 2px solid var(--primary-orange);
+            color: var(--primary-orange);
+            padding: 13px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+        .btn-primary:hover { transform: scale(1.05); background-color: #e65c00; }
+        .btn-outline:hover { background-color: var(--primary-orange); color: white; }
+
+        /* --- ABAS INTERATIVAS (PERFIS) --- */
+        .section-container { padding: 80px 20px; max-width: 900px; margin: 0 auto; }
+        .section-title { color: white; text-align: center; margin-bottom: 40px; font-size: 1.8rem; position: relative; }
+        .section-title::after { content: ''; display: block; width: 60px; height: 3px; background: var(--primary-orange); margin: 10px auto 0; }
+        
+        .tabs-header { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; }
+        .tab-btn {
+            background: transparent;
+            border: 1px solid #555;
+            color: #aaa;
+            padding: 12px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .tab-btn:hover { border-color: #888; color: #fff; }
+        .tab-btn.active { border-color: var(--primary-orange); color: var(--primary-orange); background: rgba(255,102,0,0.1); font-weight: bold; }
+
+        .tab-content { display: none; text-align: center; background: #0b2441; padding: 40px; border-radius: 15px; border: 1px solid #1c3a5e; animation: fadeIn 0.5s; }
+        .tab-content.active { display: block; }
+        .tab-icon { font-size: 3.5rem; color: var(--primary-orange); margin-bottom: 20px; }
+        .tab-content h3 { font-size: 1.5rem; margin-bottom: 15px; }
+        .tab-content p { color: #ccc; line-height: 1.6; margin-bottom: 25px; }
+        .link-action { color: var(--primary-orange); text-decoration: none; font-weight: bold; display: inline-flex; align-items: center; gap: 5px; }
+        .link-action:hover { text-decoration: underline; }
+
+        /* --- TIMELINE (COMO FUNCIONA) --- */
+        .bg-light { background-color: white; color: var(--primary-blue); border-radius: 15px; }
+        .bg-light .section-title { color: var(--primary-blue); }
+        
+        .timeline-nav { display: flex; align-items: center; justify-content: center; margin-bottom: 30px; padding: 0 10px; }
+        .step-dot { 
+            width: 40px; height: 40px; border-radius: 50%; 
+            border: 2px solid var(--primary-blue); background: white; 
+            color: var(--primary-blue); font-weight: bold; cursor: pointer; 
+            transition: 0.3s; display: flex; align-items: center; justify-content: center;
+        }
+        .step-dot.active { background: var(--primary-orange); color: white; border-color: var(--primary-orange); transform: scale(1.1); }
+        .line { flex-grow: 1; height: 2px; background: #ddd; margin: 0 5px; max-width: 50px; }
+        
+        .step-card { text-align: center; padding: 20px; min-height: 150px; }
+        .step-card h4 { font-size: 1.3rem; margin-bottom: 10px; color: var(--primary-orange); }
+        .step-card p { font-size: 1rem; color: #555; }
+
+        /* --- ACCORDION (STAKEHOLDERS) --- */
+        .section-subtitle { text-align: center; opacity: 0.8; margin-bottom: 30px; margin-top: -30px; }
+        
+        details { background: #0b2441; margin-bottom: 12px; border-radius: 8px; border: 1px solid #1c3a5e; overflow: hidden; transition: 0.3s; }
+        summary { padding: 20px; cursor: pointer; font-weight: 600; list-style: none; display: flex; align-items: center; gap: 15px; font-size: 1.1rem; }
+        summary:hover { background: rgba(255,255,255,0.02); }
+        summary::after { content: '+'; margin-left: auto; font-size: 1.4rem; color: var(--primary-orange); font-weight: 300; }
+        details[open] summary::after { content: '-'; }
+        details[open] summary { background: rgba(255,102,0,0.1); color: var(--primary-orange); border-bottom: 1px solid rgba(255,255,255,0.05); }
+        
+        .details-content { padding: 25px; font-size: 1rem; color: #ccc; line-height: 1.6; }
+        .btn-small { display: inline-block; margin-top: 15px; color: var(--primary-orange); text-decoration: none; font-weight: bold; border: 1px solid var(--primary-orange); padding: 8px 20px; border-radius: 20px; font-size: 0.85rem; transition: 0.3s; }
+        .btn-small:hover { background: var(--primary-orange); color: white; }
+
+        /* --- CARROSSEL (BENEFÍCIOS) --- */
+        .bg-dark { background-color: #050e1a; width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; padding: 60px 0; }
+        .bg-dark .section-container { padding: 0 20px; }
+        .text-orange { color: var(--primary-orange) !important; }
+        .text-orange::after { background: white; }
+
+        .carousel-container { display: flex; overflow-x: auto; gap: 20px; padding: 20px 10px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+        .carousel-container::-webkit-scrollbar { display: none; }
+        
+        .carousel-card { 
+            min-width: 260px; max-width: 260px; 
+            background: linear-gradient(145deg, #0b2441, #081b33);
+            padding: 30px 20px; border-radius: 15px; 
+            scroll-snap-align: center; text-align: center; 
+            border: 1px solid #1c3a5e; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        .carousel-card h3 { font-size: 1.2rem; margin: 15px 0; color: white; }
+        .carousel-card p { font-size: 0.95rem; color: #aaa; line-height: 1.5; }
+        .icon-orange { font-size: 2.5rem; color: var(--primary-orange); }
+
+        /* --- FORMULÁRIO --- */
+        .form-wrapper { background: white; padding: 40px; border-radius: 15px; color: #333; box-shadow: 0 15px 30px rgba(0,0,0,0.5); }
+        #formulario .section-title { color: var(--primary-blue); }
+        #formulario .section-title::after { background: var(--primary-orange); }
+
+        .input-group { margin-bottom: 20px; text-align: left; }
+        .input-group label { display: block; font-weight: 700; font-size: 0.9rem; margin-bottom: 8px; color: #444; }
+        input, select { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; background: #f9f9f9; outline: none; transition: 0.3s; }
+        input:focus, select:focus { border-color: var(--primary-orange); background: white; box-shadow: 0 0 0 3px rgba(255,102,0,0.1); }
+        
+        .whatsapp-input-wrapper { display: flex; align-items: center; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; background: #f9f9f9; }
+        .whatsapp-input-wrapper:focus-within { border-color: var(--primary-orange); box-shadow: 0 0 0 3px rgba(255,102,0,0.1); }
+        .whatsapp-input-wrapper input { border: none; box-shadow: none; background: transparent; }
+        .prefix { background: #eee; padding: 14px; color: #555; font-weight: bold; border-right: 1px solid #ddd; }
+        
+        .row { display: flex; gap: 15px; }
+        .half { width: 50%; }
+        .full-width { width: 100%; margin-top: 15px; font-size: 1.1rem; padding: 18px; box-shadow: 0 4px 15px rgba(255, 102, 0, 0.3); }
+
+        /* --- APOIE (GLASSMORPHISM) --- */
+        .glass-section { 
+            background: rgba(16, 28, 45, 0.7); 
+            backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.1); 
+            border-radius: 20px; text-align: center; 
+            margin-top: 60px; margin-bottom: 60px;
+        }
+        .gold-text { color: #FFD700; text-shadow: 0 0 15px rgba(255, 215, 0, 0.2); }
+        .support-text { margin-bottom: 30px; color: #ccc; }
+        
+        .donation-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 500px; margin: 0 auto; }
+        .donate-btn { 
+            background: transparent; 
+            border: 1px solid rgba(255,255,255,0.3); 
+            color: white; padding: 18px; border-radius: 12px; 
+            font-size: 1.2rem; cursor: pointer; transition: 0.3s; font-weight: 600;
+        }
+        .donate-btn:hover { border-color: var(--primary-orange); color: var(--primary-orange); background: rgba(255,102,0,0.1); transform: translateY(-3px); }
+        
+        .pix-feedback { margin-top: 25px; animation: fadeIn 0.5s; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; display: none; }
+        .progress-bar { width: 100%; height: 6px; background: #333; margin: 15px 0; border-radius: 3px; overflow: hidden; }
+        .progress-fill { width: 0%; height: 100%; background: var(--primary-orange); animation: progress 3s forwards; }
+        .bank-waiting { font-size: 0.85rem; color: #aaa; animation: pulse 1.5s infinite; margin-top: 5px; }
+
+        /* --- FOOTER --- */
+        footer { background: #02080f; padding: 60px 20px; text-align: center; font-size: 0.9rem; color: #666; border-top: 1px solid #111; }
+        .social-links { margin-bottom: 20px; }
+        .social-links a { color: white; font-size: 1.5rem; margin: 0 10px; transition: 0.3s; }
+        .social-links a:hover { color: var(--primary-orange); }
+        .footer-divider { border: 0; border-top: 1px solid #222; margin: 30px auto; max-width: 300px; }
+        .legal-info p { margin-bottom: 8px; font-size: 0.85rem; }
+        .legal-info strong { color: #aaa; }
+        footer a { color: #888; text-decoration: none; }
+        
+        .whatsapp-float { 
+            position: fixed; bottom: 25px; right: 25px; 
+            background: #25D366; color: white; 
+            width: 65px; height: 65px; border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 2.2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.4); 
+            z-index: 1000; text-decoration: none; transition: 0.3s;
+        }
+        .whatsapp-float:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6); }
+
+        /* --- ANIMAÇÕES --- */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes progress { to { width: 90%; } }
+        @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
+
+        /* MOBILE */
+        @media (max-width: 480px) {
+            .hero-content h1 { font-size: 1.8rem; }
+            .tabs-header { gap: 10px; }
+            .tab-btn { width: 100%; justify-content: center; }
+            .input-group.half { width: 100%; }
+            .row { flex-direction: column; gap: 0; }
+        }
+        
+        .hidden { display: none !important; }
+    </style>
 </head>
 <body>
 
@@ -19,9 +251,9 @@
     <header id="hero" class="hero-section">
         <nav class="navbar">
             <div class="logo-container">
-                <!-- ATENÇÃO: Verifique se o nome do arquivo é 'logotipo.png' ou 'Logotipo.png' no servidor -->
-                <img src="assets/images/logotipo.png" alt="Loomper Logo" class="logo-img" onerror="this.style.display='none'; document.getElementById('logo-text').style.display='block';">
-                <span id="logo-text" style="display:none; color:white; font-weight:bold; font-size:1.5rem;">LOOMPER</span>
+                <!-- Se a imagem falhar, mostra o texto -->
+                <img src="assets/images/logotipo.png" alt="Loomper" class="logo-img" onerror="this.style.display='none'; document.getElementById('logo-text').style.display='block';">
+                <span id="logo-text" style="display:none; color:white; font-weight:700; font-size:2rem; letter-spacing: 2px;">LOOMPER</span>
             </div>
         </nav>
 
@@ -54,7 +286,7 @@
 
         <!-- Conteúdo Motorista -->
         <div id="tab-motorista" class="tab-content active">
-            <i class="fa-solid fa-truck-front tab-icon"></i>
+            <i class="fa-solid fa-truck-front tab-icon"></i> <!-- Ícone outline de caminhão -->
             <h3>Motorista Cegonheiro</h3>
             <p>Encontre chapas qualificados rapidamente. Gerencie sua operação com segurança e transparência.</p>
             <a href="#como-funciona" class="link-action">Ver simulação <i class="fa-solid fa-arrow-right"></i></a>
@@ -62,7 +294,7 @@
 
         <!-- Conteúdo Chapa -->
         <div id="tab-chapa" class="tab-content">
-            <i class="fa-solid fa-helmet-safety tab-icon"></i>
+            <i class="fa-solid fa-helmet-safety tab-icon"></i> <!-- Ícone outline de capacete -->
             <h3>Chapa / Ajudante</h3>
             <p>Construa seu histórico profissional. Receba oportunidades direto no celular. 100% gratuito.</p>
             <a href="#como-funciona" class="link-action">Ver simulação <i class="fa-solid fa-arrow-right"></i></a>
@@ -70,7 +302,7 @@
 
         <!-- Conteúdo Empresa -->
         <div id="tab-empresa" class="tab-content">
-            <i class="fa-regular fa-building tab-icon"></i>
+            <i class="fa-regular fa-building tab-icon"></i> <!-- Ícone outline de prédio -->
             <h3>Transportadora</h3>
             <p>Gerencie toda operação. Relatórios ESG automáticos e Compliance OEA.</p>
             <a href="#como-funciona" class="link-action">Ver simulação <i class="fa-solid fa-arrow-right"></i></a>
@@ -286,7 +518,138 @@
         <i class="fa-brands fa-whatsapp"></i>
     </a>
 
-    <!-- SCRIPTS -->
-    <script src="script.js"></script>
+    <!-- SCRIPTS (JAVASCRIPT EMBUTIDO) -->
+    <script>
+        /* --- 1. LÓGICA DAS ABAS (PERFIS) --- */
+        function openTab(evt, tabName) {
+            var i, tabContent, tabBtn;
+            tabContent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabContent.length; i++) {
+                tabContent[i].style.display = "none";
+                tabContent[i].classList.remove("active");
+            }
+            tabBtn = document.getElementsByClassName("tab-btn");
+            for (i = 0; i < tabBtn.length; i++) {
+                tabBtn[i].className = tabBtn[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            // Adiciona classe active para animação
+            setTimeout(() => document.getElementById(tabName).classList.add("active"), 10);
+            evt.currentTarget.className += " active";
+        }
+
+        /* --- 2. TIMELINE DINÂMICA (COMO FUNCIONA) --- */
+        const stepsData = {
+            1: "<h4>1. Cadastre-se</h4><p>Preencha seus dados e escolha seu perfil. É rápido e 100% gratuito para profissionais.</p>",
+            2: "<h4>2. Validação</h4><p>Nossa equipe valida suas informações para garantir a segurança da comunidade.</p>",
+            3: "<h4>3. Receba Ofertas</h4><p>Conecte-se com oportunidades reais ou profissionais qualificados na sua região.</p>",
+            4: "<h4>4. Operação Segura</h4><p>Combine detalhes via chat integrado e realize o serviço com monitoramento.</p>",
+            5: "<h4>5. Avaliação</h4><p>Finalize o serviço e avalie. Construa sua reputação no ecossistema Loomper.</p>"
+        };
+
+        function setStep(stepNum) {
+            document.getElementById('step-content').innerHTML = stepsData[stepNum];
+            let dots = document.getElementsByClassName('step-dot');
+            for(let d of dots) d.classList.remove('active');
+            dots[stepNum-1].classList.add('active');
+        }
+        // Iniciar no passo 1
+        setStep(1);
+
+        /* --- 3. AUTO-FECHAMENTO ACCORDION --- */
+        const details = document.querySelectorAll("details");
+        details.forEach((targetDetail) => {
+            targetDetail.addEventListener("click", () => {
+                details.forEach((detail) => {
+                    if (detail !== targetDetail) {
+                        detail.removeAttribute("open");
+                    }
+                });
+            });
+        });
+
+        /* --- 4. FORMULÁRIO INTELIGENTE --- */
+        // a) Detectar Convite na URL (?convite=CODIGO)
+        const urlParams = new URLSearchParams(window.location.search);
+        const conviteCode = urlParams.get('convite');
+        if(conviteCode) {
+            document.getElementById('codigoIndicacao').value = conviteCode;
+        }
+
+        // b) Mudar Botão de Acordo com Perfil
+        function updateFormCTA() {
+            const perfil = document.getElementById('perfilSelect').value;
+            const btn = document.getElementById('submitBtn');
+            
+            const perfilEmpresa = ['Montadora', 'Seguradora', 'Governo/Órgão Público', 'Investidor'];
+            
+            if (perfilEmpresa.includes(perfil)) {
+                btn.textContent = "SOLICITAR DEMONSTRAÇÃO";
+            } else {
+                btn.textContent = "QUERO SER PIONEIRO";
+            }
+        }
+
+        // c) Função para pré-selecionar perfil vindo do Accordion
+        function selectRole(role) {
+            const select = document.getElementById('perfilSelect');
+            select.value = role;
+            updateFormCTA();
+        }
+
+        /* --- 5. COPIAR PIX (APOIE) --- */
+        function copyPix(valor) {
+            // Chave PIX oficial
+            const pixKey = "contato@loomper.com.br"; 
+            
+            navigator.clipboard.writeText(pixKey).then(() => {
+                // Feedback Visual
+                const feedback = document.getElementById('pix-feedback');
+                feedback.classList.remove('hidden');
+                feedback.style.display = 'block';
+                
+                // Esconder feedback após 6s
+                setTimeout(() => {
+                    feedback.style.display = 'none';
+                }, 6000);
+            });
+        }
+
+        /* --- 6. API IBGE (ESTADOS E CIDADES) --- */
+        fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome')
+            .then(res => res.json())
+            .then(estados => {
+                const selectUF = document.getElementById('estadoSelect');
+                estados.forEach(uf => {
+                    const option = document.createElement('option');
+                    option.value = uf.sigla;
+                    option.textContent = uf.sigla;
+                    selectUF.appendChild(option);
+                });
+            });
+
+        document.getElementById('estadoSelect').addEventListener('change', function() {
+            const uf = this.value;
+            if(!uf) return;
+            
+            fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`)
+                .then(res => res.json())
+                .then(cidades => {
+                    const dataList = document.getElementById('cidadesList');
+                    dataList.innerHTML = ''; // Limpar
+                    cidades.forEach(cidade => {
+                        const option = document.createElement('option');
+                        option.value = cidade.nome;
+                        dataList.appendChild(option);
+                    });
+                });
+        });
+
+        /* --- 7. MÁSCARA WHATSAPP --- */
+        document.getElementById('whatsappInput').addEventListener('input', function (e) {
+            let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
+            e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
+        });
+    </script>
 </body>
 </html>
