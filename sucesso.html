@@ -1,13 +1,256 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8">
-  <title>Cadastro recebido</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo ao Grupo de Pioneiros! - Loomper</title>
+    <!-- Favicon precisa estar na pasta assets/images -->
+    <link rel="icon" type="image/png" href="assets/images/logotipo.png">
+    <!-- FontAwesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a1628 0%, #1a2850 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .success-container {
+            max-width: 600px;
+            text-align: center;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .success-icon {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #FF6600, #ffd700); /* Ajustado para Laranja Loomper */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            font-size: 4rem;
+            animation: bounce 1s ease infinite;
+            box-shadow: 0 0 20px rgba(255, 102, 0, 0.4);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #FF6600, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+        }
+
+        .subtitle { font-size: 1.1rem; color: #b8c1cc; margin-bottom: 30px; }
+
+        /* CARD DE ID (NOVO) */
+        .id-card {
+            background: rgba(255, 102, 0, 0.1);
+            border: 2px dashed #FF6600;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+        .id-label { display: block; font-size: 0.9rem; color: #ccc; text-transform: uppercase; margin-bottom: 5px; }
+        .id-number { font-size: 2rem; font-weight: bold; color: #ffd700; letter-spacing: 3px; font-family: monospace; }
+
+        .info-card {
+            background-color: rgba(26, 35, 50, 0.8);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .info-card h2 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: #ffd700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .info-card p { color: #b8c1cc; line-height: 1.6; margin-bottom: 10px; }
+        .highlight { color: #ffd700; font-weight: bold; }
+
+        .beneficios-list { list-style: none; padding: 0; margin: 20px 0; }
+        .beneficios-list li {
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border-left: 4px solid #FF6600;
+            text-align: left;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .btn-container { display: flex; flex-direction: column; gap: 15px; margin-top: 30px; }
+        .btn {
+            padding: 16px 32px;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-whatsapp { background-color: #25d366; color: white; font-size: 1.1rem; }
+        .btn-whatsapp:hover { background-color: #1fa855; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5); }
+
+        .btn-home { background: transparent; border: 1px solid #555; color: #aaa; }
+        .btn-home:hover { border-color: #FF6600; color: #FF6600; }
+
+        .share-section {
+            margin-top: 40px;
+            padding: 25px;
+            background: linear-gradient(145deg, rgba(255,102,0,0.1), rgba(0,0,0,0.2));
+            border-radius: 12px;
+            border: 1px solid rgba(255, 102, 0, 0.3);
+        }
+        .share-section h3 { margin-bottom: 15px; color: #ffd700; }
+        .share-section p { color: #b8c1cc; margin-bottom: 20px; font-size: 0.95rem; }
+
+        .btn-share {
+            background: linear-gradient(135deg, #25d366, #1fa855);
+            color: white;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            width: 100%;
+            justify-content: center;
+        }
+        .btn-share:hover { transform: scale(1.02); box-shadow: 0 4px 15px rgba(37, 211, 102, 0.5); }
+
+        .footer-note { margin-top: 40px; font-size: 0.8rem; color: #556; border-top: 1px solid #223; padding-top: 20px; }
+        .footer-note a { color: #7a8b99; text-decoration: none; }
+        .legal-text { margin-top: 10px; opacity: 0.6; font-size: 0.75rem; }
+
+        @media (min-width: 768px) {
+            h1 { font-size: 3rem; }
+            .btn-container { flex-direction: row; justify-content: center; }
+        }
+    </style>
 </head>
 <body>
-  <h1>Cadastro realizado com sucesso 🚀</h1>
-  <p>Você agora faz parte do grupo de pioneiros do Loomper.</p>
-  <a href="/">Voltar para o site</a>
+    <div class="success-container">
+        <!-- Ícone Animado -->
+        <div class="success-icon"><i class="fa-solid fa-check"></i></div>
+        
+        <h1>Bem-vindo, Pioneiro!</h1>
+        <p class="subtitle">Sua inscrição foi recebida. Você faz parte da revolução.</p>
+
+        <!-- NOVO: Cartão de Identificação (ID) -->
+        <div class="id-card">
+            <span class="id-label">Seu ID de Membro Beta</span>
+            <div class="id-number" id="memberID">...</div>
+        </div>
+
+        <div class="info-card">
+            <h2>📞 Próximos Passos</h2>
+            <p>Em breve você receberá mais informações por <span class="highlight">WhatsApp e e-mail</span>.</p>
+        </div>
+
+        <!-- Lista de Benefícios (Mantida do seu original) -->
+        <div class="info-card">
+            <h2>🎁 Benefícios Ativados</h2>
+            <ul class="beneficios-list">
+                <li><div><strong>Badge "Pioneiro"</strong> vitalício no perfil</div></li>
+                <li><div><strong>Histórico antecipado</strong> antes do mercado</div></li>
+                <li><div><strong>Acesso prioritário</strong> às cargas e serviços</div></li>
+                <li><div><strong>Clube de Vantagens</strong> (Descontos)</div></li>
+            </ul>
+        </div>
+
+        <!-- Seção de Viralização Inteligente -->
+        <div class="share-section">
+            <h3>💛 Aumente sua Prioridade</h3>
+            <p>Convide amigos da estrada usando seu link exclusivo abaixo. Quanto mais indicados, mais benefícios no lançamento.</p>
+            
+            <!-- O link deste botão será gerado via Javascript abaixo -->
+            <a href="#" class="btn-share" id="shareBtn" target="_blank">
+                <i class="fa-brands fa-whatsapp"></i> Enviar Convite no Zap
+            </a>
+            <p style="margin-top: 15px; font-size: 0.85rem; opacity: 0.7;">O link já inclui seu código de indicação! 🚀</p>
+        </div>
+
+        <div class="btn-container">
+            <a href="https://wa.me/5511965858142" class="btn btn-whatsapp" target="_blank">
+                <i class="fa-brands fa-whatsapp"></i> Falar com Suporte
+            </a>
+            <a href="index.html" class="btn btn-home">Voltar para Home</a>
+        </div>
+
+        <div class="footer-note">
+            <p>Dúvidas? <a href="mailto:contato@loomper.com.br">contato@loomper.com.br</a></p>
+            <p class="legal-text">
+                Gestão: <strong>Ajud.ai Brasil Inova Simples (i.s.)</strong><br>
+                CNPJ: 59.150.688/0001-39 | São Bernardo do Campo-SP
+            </p>
+        </div>
+    </div>
+
+    <!-- Script de Inteligência: Gera ID e Link de Convite -->
+    <script>
+        // 1. Gerar ID Aleatório (Simulação)
+        // Gera um número entre 1000 e 9999
+        const randomID = Math.floor(1000 + Math.random() * 9000);
+        const finalID = "LMP-" + randomID;
+        
+        // 2. Exibir ID na tela
+        document.getElementById('memberID').textContent = finalID;
+
+        // 3. Configurar Link de Compartilhamento Viral
+        const siteUrl = "https://www.loomper.com.br"; 
+        
+        // Mensagem persuasiva para o amigo
+        const msg = `Olá! Acabei de me cadastrar como Pioneiro na Loomper (Logística Automotiva). 🚛\n\nÉ gratuito para profissionais. Use meu código para entrar também:\n👉 ${siteUrl}?convite=${finalID}`;
+        
+        const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
+        
+        // Injetar no botão
+        document.getElementById('shareBtn').href = whatsappUrl;
+
+        console.log('🎉 Bem-vindo ao Loomper! ID Gerado: ' + finalID);
+    </script>
 </body>
 </html>
-
