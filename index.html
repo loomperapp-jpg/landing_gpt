@@ -34,7 +34,7 @@
             z-index: 1000;
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
-        .logo-img { height: 35px; } /* Logo ajustado para mobile */
+        .logo-img { height: 35px; }
         
         .nav-links { display: flex; gap: 20px; align-items: center; }
         .nav-links a { color: white; font-size: 0.9rem; font-weight: 600; }
@@ -45,19 +45,17 @@
         }
         .btn-header:hover { background: var(--orange); color: white !important; }
 
-        .menu-toggle { display: none; font-size: 1.5rem; color: white; cursor: pointer; }
+        .menu-toggle { display: none; font-size: 1.5rem; color: white; cursor: pointer; padding: 5px; }
         
         /* --- 3. HERO SECTION --- */
         .hero {
             position: relative;
-            /* Altura dinâmica: conteúdo + padding, sem forçar 100vh no mobile */
             padding: 120px 20px 60px; 
             min-height: auto;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             text-align: center;
             background: url('assets/images/caminhao_bg.jpg') no-repeat center center/cover;
         }
-        /* Máscara reduzida (75%) para mostrar a foto */
         .hero-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 26, 51, 0.75);
@@ -83,7 +81,6 @@
         .btn-hero:hover { transform: scale(1.05); background: #e65c00; }
 
         /* --- 4. SUPER CARD (FUSÃO) --- */
-        /* Espaçamento otimizado para colar no Hero */
         .section-padding { padding: 40px 20px; max-width: 1000px; margin: 0 auto; }
         .section-title { text-align: center; font-size: 1.8rem; margin-bottom: 25px; text-shadow: 2px 2px 4px black; }
 
@@ -108,7 +105,6 @@
         .tab-desc { text-align: center; font-size: 1rem; margin-bottom: 30px; color: #555; line-height: 1.5; padding: 0 10px; }
 
         .timeline { display: flex; justify-content: space-between; position: relative; margin-top: 20px; overflow-x: auto; padding-bottom: 10px; }
-        /* Linha conectora */
         .timeline::before {
             content: ''; position: absolute; top: 14px; left: 20px; right: 20px; height: 2px;
             background: #e0e0e0; z-index: 1; min-width: 300px;
@@ -169,7 +165,6 @@
             max-width: 1100px; margin: 0 auto 50px;
         }
         
-        /* Coluna Esquerda: Links */
         .footer-links-grid {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 30px;
         }
@@ -178,10 +173,9 @@
         .footer-col ul li a { color: #888; transition: 0.2s; }
         .footer-col ul li a:hover { color: var(--orange); padding-left: 5px; }
 
-        /* Coluna Direita: Imagem & Manifesto */
         .footer-image-col {
             position: relative; border-radius: 12px; overflow: hidden;
-            border: 1px solid #333; min-height: 250px;
+            border: 1px solid #333; min-height: 250px; background: #111;
         }
         .footer-image-col img { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; transition: 0.5s; }
         .footer-image-col:hover img { opacity: 0.8; transform: scale(1.02); }
@@ -197,7 +191,7 @@
             text-align: center; border-top: 1px solid #222; padding-top: 30px; color: #555; font-size: 0.8rem; line-height: 1.6;
         }
 
-        /* --- 8. MODAIS (POP-UPS) --- */
+        /* --- 8. MODAIS --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.9); z-index: 2000;
@@ -210,9 +204,7 @@
             box-shadow: 0 25px 50px rgba(0,0,0,0.7);
             max-height: 90vh; overflow-y: auto; color: #333;
         }
-        .modal-content.dark-mode {
-            background: #1a1a1a; color: #eee; border: 1px solid #444;
-        }
+        .modal-content.dark-mode { background: #1a1a1a; color: #eee; border: 1px solid #444; }
         .close-modal {
             position: absolute; top: 15px; right: 20px; font-size: 1.8rem;
             color: #aaa; cursor: pointer; transition: 0.2s;
@@ -229,7 +221,6 @@
         .modal-text ul { margin-left: 20px; margin-bottom: 15px; list-style: disc; color: #555; }
         .dark-mode .modal-text ul { color: #ccc; }
         
-        /* Form Styles */
         .input-group { margin-bottom: 15px; }
         .input-group label { display: block; color: #444; font-weight: 700; font-size: 0.85rem; margin-bottom: 5px; }
         .input-control { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; background: #f9f9f9; }
@@ -301,7 +292,6 @@
         <h2 class="section-title">Como Funciona</h2>
         
         <div class="super-card">
-            <!-- Abas Mestras -->
             <div class="tabs-head">
                 <div class="tab-btn active" onclick="switchProfile('motorista', this)">
                     <i class="fa-solid fa-truck-front"></i> Motorista
@@ -314,11 +304,8 @@
                 </div>
             </div>
 
-            <!-- Conteúdo Dinâmico -->
             <div id="dynamic-content" class="tab-body active">
                 <p id="profile-desc" class="tab-desc">Encontre chapas qualificados rapidamente e gerencie sua carga.</p>
-                
-                <!-- Timeline Dinâmica -->
                 <div class="timeline" id="timeline-container">
                     <!-- Injetado via JS -->
                 </div>
@@ -349,7 +336,6 @@
     <!-- 6. RODAPÉ RICO -->
     <footer>
         <div class="footer-layout">
-            <!-- Esquerda: Links -->
             <div class="footer-links-grid">
                 <div class="footer-col">
                     <h4>Institucional</h4>
@@ -375,10 +361,9 @@
                 </div>
             </div>
 
-            <!-- Direita: Imagem Humanizada -->
             <div class="footer-image-col">
-                <!-- Certifique-se de salvar a imagem como equipe_footer.jpg na pasta assets/images -->
-                <img src="assets/images/equipe_footer.jpg" alt="Equipe Loomper na estrada">
+                <!-- Correção da imagem para .png -->
+                <img src="assets/images/equipe_footer.png" alt="Equipe Loomper na estrada" onerror="this.style.background='#222'">
                 <div class="manifesto-overlay">
                     <p class="manifesto-text">"Quando o trabalho deixa de ser improviso, o crescimento deixa de ser sorte."</p>
                 </div>
@@ -484,6 +469,8 @@
                     <li>Geração de dados para políticas públicas.</li>
                 </ul>
                 <p><strong>Não é assistencialismo. É infraestrutura social aplicada à economia real.</strong></p>
+                <!-- Botão de Ação Solicitado -->
+                <button class="btn-submit" onclick="closeModal('modal-gov'); openForm('Governo')">AGENDAR REUNIÃO INSTITUCIONAL</button>
             </div>
         </div>
     </div>
@@ -548,24 +535,19 @@
         function init() {
             switchProfile('motorista', document.querySelector('.tab-btn.active'));
             
-            // ID e Data
             const rid = "LMP-" + Math.floor(1000 + Math.random() * 9000);
             localStorage.setItem('meuIdLoomper', rid);
             document.getElementById('hiddenId').value = rid;
             
-            // IBGE
             loadStates();
         }
 
         function switchProfile(key, btn) {
-            // UI Abas
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             if(btn) btn.classList.add('active');
             
-            // Atualizar Descrição
             document.getElementById('profile-desc').textContent = DATA[key].desc;
             
-            // Atualizar Timeline
             const tlContainer = document.getElementById('timeline-container');
             tlContainer.innerHTML = '';
             DATA[key].timeline.forEach((step, idx) => {
@@ -573,7 +555,6 @@
                 tlContainer.innerHTML += html;
             });
 
-            // Atualizar Jornada (Benefícios)
             const jContainer = document.getElementById('journey-container');
             jContainer.innerHTML = '';
             DATA[key].benefits.forEach(b => {
@@ -586,24 +567,40 @@
             });
         }
 
-        /* --- AUXILIARES --- */
+        /* --- UI & MODAIS --- */
         function openForm(perfil) {
             document.getElementById('modal-form').style.display = 'flex';
             if(perfil) document.getElementById('perfilSelect').value = perfil;
         }
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        
         function toggleMenu() { 
             const n = document.getElementById('navLinks');
             n.style.display = (n.style.display === 'flex') ? 'none' : 'flex';
         }
+
+        // FECHAR AO CLICAR FORA (MENU MOBILE E MODAL)
+        window.onclick = function(e) {
+            // Fechar Modal
+            if(e.target.classList.contains('modal-overlay')) {
+                e.target.style.display='none';
+            }
+            // Fechar Menu Mobile se clicar fora
+            const nav = document.getElementById('navLinks');
+            const toggle = document.querySelector('.menu-toggle');
+            if (window.innerWidth < 768 && nav.style.display === 'flex') {
+                if (!nav.contains(e.target) && !toggle.contains(e.target)) {
+                    nav.style.display = 'none';
+                }
+            }
+        }
+
         function copyPix(v) {
             navigator.clipboard.writeText("contato@loomper.com.br");
             document.getElementById('pix-msg').style.display = 'block';
             setTimeout(()=>document.getElementById('pix-msg').style.display='none', 4000);
         }
-
-        window.onclick = function(e) { if(e.target.classList.contains('modal-overlay')) e.target.style.display='none'; }
 
         /* --- IBGE --- */
         let validCities = [];
@@ -645,7 +642,6 @@
             e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
         });
 
-        // Init
         init();
     </script>
 </body>
