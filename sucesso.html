@@ -3,258 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bem-vindo ao Grupo de Pioneiros! - Loomper</title>
-    <!-- Favicon precisa estar na pasta assets/images -->
+    <title>Bem-vindo! - Loomper</title>
     <link rel="icon" type="image/png" href="assets/images/logotipo.png">
-    <!-- FontAwesome para ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0a1628 0%, #1a2850 100%);
-            color: #ffffff;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .success-container {
-            max-width: 600px;
-            text-align: center;
-            animation: fadeIn 0.6s ease-in;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .success-icon {
-            width: 120px;
-            height: 120px;
-            background: linear-gradient(135deg, #FF6600, #ffd700); /* Ajustado para Laranja Loomper */
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 30px;
-            font-size: 4rem;
-            animation: bounce 1s ease infinite;
-            box-shadow: 0 0 20px rgba(255, 102, 0, 0.4);
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        h1 {
-            font-size: 2.2rem;
-            margin-bottom: 10px;
-            background: linear-gradient(135deg, #FF6600, #ffd700);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-weight: 800;
-        }
-
+        /* MANTIVE O MESMO CSS - SEM ALTERAÇÕES VISUAIS DRÁSTICAS */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: linear-gradient(135deg, #0a1628 0%, #1a2850 100%); color: #fff; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .success-container { max-width: 600px; text-align: center; animation: fadeIn 0.6s; }
+        @keyframes fadeIn { from {opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);} }
+        .success-icon { width: 100px; height: 100px; background: linear-gradient(135deg, #FF6600, #ffd700); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 30px; font-size: 3.5rem; box-shadow: 0 0 20px rgba(255, 102, 0, 0.4); }
+        h1 { font-size: 2rem; margin-bottom: 10px; color: #FF6600; font-weight: 800; }
         .subtitle { font-size: 1.1rem; color: #b8c1cc; margin-bottom: 30px; }
-
-        /* CARD DE ID (NOVO) */
-        .id-card {
-            background: rgba(255, 102, 0, 0.1);
-            border: 2px dashed #FF6600;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 30px;
-        }
-        .id-label { display: block; font-size: 0.9rem; color: #ccc; text-transform: uppercase; margin-bottom: 5px; }
+        .id-card { background: rgba(255, 102, 0, 0.1); border: 2px dashed #FF6600; padding: 20px; border-radius: 12px; margin-bottom: 30px; }
         .id-number { font-size: 2rem; font-weight: bold; color: #ffd700; letter-spacing: 3px; font-family: monospace; }
-
-        .info-card {
-            background-color: rgba(26, 35, 50, 0.8);
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 25px;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .info-card h2 {
-            font-size: 1.4rem;
-            margin-bottom: 15px;
-            color: #ffd700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .info-card p { color: #b8c1cc; line-height: 1.6; margin-bottom: 10px; }
-        .highlight { color: #ffd700; font-weight: bold; }
-
-        .beneficios-list { list-style: none; padding: 0; margin: 20px 0; }
-        .beneficios-list li {
-            background-color: rgba(0, 0, 0, 0.3);
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            border-left: 4px solid #FF6600;
-            text-align: left;
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-        }
-
-        .btn-container { display: flex; flex-direction: column; gap: 15px; margin-top: 30px; }
-        .btn {
-            padding: 16px 32px;
-            font-size: 1rem;
-            font-weight: bold;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-whatsapp { background-color: #25d366; color: white; font-size: 1.1rem; }
-        .btn-whatsapp:hover { background-color: #1fa855; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5); }
-
-        .btn-home { background: transparent; border: 1px solid #555; color: #aaa; }
-        .btn-home:hover { border-color: #FF6600; color: #FF6600; }
-
-        .share-section {
-            margin-top: 40px;
-            padding: 25px;
-            background: linear-gradient(145deg, rgba(255,102,0,0.1), rgba(0,0,0,0.2));
-            border-radius: 12px;
-            border: 1px solid rgba(255, 102, 0, 0.3);
-        }
-        .share-section h3 { margin-bottom: 15px; color: #ffd700; }
-        .share-section p { color: #b8c1cc; margin-bottom: 20px; font-size: 0.95rem; }
-
-        .btn-share {
-            background: linear-gradient(135deg, #25d366, #1fa855);
-            color: white;
-            padding: 14px 28px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            width: 100%;
-            justify-content: center;
-        }
-        .btn-share:hover { transform: scale(1.02); box-shadow: 0 4px 15px rgba(37, 211, 102, 0.5); }
-
+        .info-card { background-color: rgba(26, 35, 50, 0.8); border-radius: 12px; padding: 30px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.1); }
+        .info-card h2 { font-size: 1.4rem; margin-bottom: 15px; color: #ffd700; }
+        .beneficios-list li { background-color: rgba(0, 0, 0, 0.3); padding: 15px; margin-bottom: 10px; border-radius: 8px; border-left: 4px solid #FF6600; text-align: left; display: flex; gap: 10px; }
+        .btn-whatsapp { background-color: #25d366; color: white; padding: 15px 30px; border-radius: 50px; text-decoration: none; font-weight: bold; display: inline-flex; align-items: center; gap: 10px; transition: 0.3s; }
+        .btn-whatsapp:hover { transform: scale(1.05); }
+        .btn-home { color: #aaa; text-decoration: none; margin-top: 20px; display: inline-block; }
         .footer-note { margin-top: 40px; font-size: 0.8rem; color: #556; border-top: 1px solid #223; padding-top: 20px; }
-        .footer-note a { color: #7a8b99; text-decoration: none; }
-        .legal-text { margin-top: 10px; opacity: 0.6; font-size: 0.75rem; }
-
-        @media (min-width: 768px) {
-            h1 { font-size: 3rem; }
-            .btn-container { flex-direction: row; justify-content: center; }
-        }
+        
+        /* CLASSES PARA ESCONDER ELEMENTOS */
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
     <div class="success-container">
-        <!-- Ícone Animado -->
         <div class="success-icon"><i class="fa-solid fa-check"></i></div>
         
-        <h1>Bem-vindo, Pioneiro!</h1>
-        <p class="subtitle">Sua inscrição foi recebida. Você faz parte da revolução.</p>
+        <!-- Título Dinâmico -->
+        <h1 id="page-title">Bem-vindo, Pioneiro!</h1>
+        <p class="subtitle" id="page-subtitle">Sua inscrição foi recebida. Você faz parte da revolução.</p>
 
-        <!-- NOVO: Cartão de Identificação (ID) -->
+        <!-- ID Card (Sempre visível) -->
         <div class="id-card">
-            <span class="id-label">Seu ID de Membro Beta</span>
+            <span class="id-label" style="display:block; font-size:0.8rem; color:#ccc;">PROTOCOLO / ID</span>
             <div class="id-number" id="memberID">...</div>
         </div>
 
-        <div class="info-card">
-            <h2>📞 Próximos Passos</h2>
-            <p>Em breve você receberá mais informações por <span class="highlight">WhatsApp e e-mail</span>.</p>
+        <!-- SEÇÃO B2C (Motorista/Chapa) -->
+        <div id="content-b2c">
+            <div class="info-card">
+                <h2>🎁 Benefícios Ativados</h2>
+                <ul class="beneficios-list" style="list-style:none;">
+                    <li><strong>Selo Pioneiro</strong> vitalício no perfil</li>
+                    <li><strong>Prioridade</strong> no acesso às cargas</li>
+                    <li><strong>Clube de Vantagens</strong> (Descontos)</li>
+                </ul>
+            </div>
+
+            <div class="info-card">
+                <h2>💛 Aumente sua Prioridade</h2>
+                <p style="color:#ccc; margin-bottom:20px;">Convide amigos da estrada. Quanto mais indicados, mais moral no lançamento.</p>
+                <a href="#" class="btn-whatsapp" id="shareBtn" target="_blank">
+                    <i class="fa-brands fa-whatsapp"></i> Enviar Convite no Zap
+                </a>
+            </div>
         </div>
 
-        <!-- Lista de Benefícios (Mantida do seu original) -->
-        <div class="info-card">
-            <h2>🎁 Benefícios Ativados</h2>
-            <ul class="beneficios-list">
-                <li><div><strong>Badge "Pioneiro"</strong> vitalício no perfil</div></li>
-                <li><div><strong>Histórico antecipado</strong> antes do mercado</div></li>
-                <li><div><strong>Acesso prioritário</strong> às cargas e serviços</div></li>
-                <li><div><strong>Clube de Vantagens</strong> (Descontos)</div></li>
-            </ul>
+        <!-- SEÇÃO B2B (Empresas/Gov) - Inicialmente oculta -->
+        <div id="content-b2b" class="hidden">
+            <div class="info-card">
+                <h2>✅ Solicitação Registrada</h2>
+                <p style="color:#ccc; line-height:1.6;">Recebemos seu cadastro institucional. <br>Nossa equipe de parcerias analisará seu perfil e entrará em contato em breve para agendar uma apresentação executiva.</p>
+            </div>
         </div>
 
-        <!-- Seção de Viralização Inteligente -->
-        <div class="share-section">
-            <h3>💛 Aumente sua Prioridade</h3>
-            <p>Convide amigos da estrada usando seu link exclusivo abaixo. Quanto mais indicados, mais benefícios no lançamento.</p>
-            
-            <!-- O link deste botão será gerado via Javascript abaixo -->
-            <a href="#" class="btn-share" id="shareBtn" target="_blank">
-                <i class="fa-brands fa-whatsapp"></i> Enviar Convite no Zap
-            </a>
-            <p style="margin-top: 15px; font-size: 0.85rem; opacity: 0.7;">O link já inclui seu código de indicação! 🚀</p>
-        </div>
-
-        <div class="btn-container">
-            <a href="https://wa.me/5511965858142" class="btn btn-whatsapp" target="_blank">
-                <i class="fa-brands fa-whatsapp"></i> Falar com Suporte
-            </a>
-            <a href="index.html" class="btn btn-home">Voltar para Home</a>
-        </div>
+        <a href="index.html" class="btn-home">Voltar para Home</a>
 
         <div class="footer-note">
-            <p>Dúvidas? <a href="mailto:contato@loomper.com.br">contato@loomper.com.br</a></p>
-            <p class="legal-text">
-                Gestão: <strong>Ajud.ai Brasil Inova Simples (i.s.)</strong><br>
-                CNPJ: 59.150.688/0001-39 | São Bernardo do Campo-SP
-            </p>
+            <p>Gestão: <strong>Ajud.ai Brasil Inova Simples (i.s.)</strong></p>
+            <p>CNPJ: 59.150.688/0001-39</p>
         </div>
     </div>
 
-    <!-- Script de Inteligência: Gera ID e Link de Convite -->
     <script>
-        // 1. Recuperar o ID que foi gerado na Home e enviado por e-mail
-        // Se por acaso não tiver (acesso direto), gera um novo de backup
+        // 1. Recuperar Dados
         let finalID = localStorage.getItem('meuIdLoomper');
+        let perfil = localStorage.getItem('userProfile') || 'Motorista'; // Padrão se não achar
         
-        if (!finalID) {
-            const randomID = Math.floor(1000 + Math.random() * 9000);
-            finalID = "LMP-" + randomID;
-        }
-        
-        // 2. Exibir ID na tela
+        if (!finalID) { finalID = "LMP-" + Math.floor(1000 + Math.random() * 9000); }
         document.getElementById('memberID').textContent = finalID;
 
-        // 3. Configurar Link de Compartilhamento Viral
-        const siteUrl = "https://www.loomper.com.br"; 
+        // 2. Lógica Condicional (B2B vs B2C)
+        const perfisB2B = ['Transportadora', 'Montadora', 'Seguradora', 'Investidor', 'Governo'];
         
-        // Mensagem persuasiva para o amigo
-        const msg = `Olá! Acabei de me cadastrar como Pioneiro na Loomper (Logística Automotiva). 🚛\n\nÉ gratuito para profissionais. Use meu código para entrar também:\n👉 ${siteUrl}?convite=${finalID}`;
-        
-        const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
-        
-        // Injetar no botão
-        document.getElementById('shareBtn').href = whatsappUrl;
-
-        console.log('🎉 Bem-vindo ao Loomper! ID Confirmado: ' + finalID);
+        if (perfisB2B.includes(perfil) || perfil.includes('Governo')) {
+            // É CORPORATIVO
+            document.getElementById('page-title').innerText = "Solicitação Recebida";
+            document.getElementById('page-subtitle').innerText = "Obrigado pelo interesse no ecossistema Loomper.";
+            
+            // Troca o conteúdo
+            document.getElementById('content-b2c').classList.add('hidden');
+            document.getElementById('content-b2b').classList.remove('hidden');
+        } else {
+            // É MOTORISTA/CHAPA (Mantém padrão)
+            const siteUrl = "https://www.loomper.com.br"; 
+            const msg = `Olá! Acabei de me cadastrar como Pioneiro na Loomper. 🚛 Use meu código para entrar também: ${siteUrl}?convite=${finalID}`;
+            document.getElementById('shareBtn').href = `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
+        }
     </script>
 </body>
 </html>
