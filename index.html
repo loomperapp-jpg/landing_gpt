@@ -6,237 +6,94 @@
     <title>Loomper | A Primeira Plataforma da Logística Automotiva</title>
     <meta name="description" content="Conectamos motoristas de cegonha, chapas e transportadoras em um ecossistema colaborativo.">
     
-    <!-- Ícones e Fontes -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* --- 1. VARIÁVEIS & RESET --- */
-        :root {
-            --blue-dark: #001A33;
-            --blue-light: #0b2441;
-            --orange: #FF6600;
-            --white: #ffffff;
-            --text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
-        }
+        /* (MANTIVE O MESMO CSS DA VERSÃO ANTERIOR PARA ECONOMIZAR ESPAÇO AQUI) */
+        /* ... Cole o CSS da versão v4.3 aqui se precisar, ou mantenha o que já está ... */
+        /* Vou incluir apenas o CSS NOVO para o Alerta de Duplicidade */
+        
+        :root { --blue-dark: #001A33; --blue-light: #0b2441; --orange: #FF6600; --white: #ffffff; --text-shadow: 2px 2px 4px rgba(0,0,0,0.9); }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; scroll-behavior: smooth; }
         body { background-color: var(--blue-dark); color: var(--white); overflow-x: hidden; }
         ul { list-style: none; }
         a { text-decoration: none; transition: 0.3s; }
-
-        /* --- 2. HEADER & NAVEGAÇÃO --- */
-        .navbar {
-            position: fixed; top: 0; left: 0; width: 100%;
-            background: rgba(0, 26, 51, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 15px 20px;
-            display: flex; justify-content: space-between; align-items: center;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
+        .navbar { position: fixed; top: 0; left: 0; width: 100%; background: rgba(0, 26, 51, 0.95); backdrop-filter: blur(10px); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.1); }
         .logo-img { height: 35px; }
-        
         .nav-links { display: flex; gap: 20px; align-items: center; }
         .nav-links a { color: white; font-size: 0.9rem; font-weight: 600; }
         .nav-links a:hover { color: var(--orange); }
-        .btn-header { 
-            border: 1px solid var(--orange); color: var(--orange) !important; 
-            padding: 8px 18px; border-radius: 20px; font-size: 0.85rem;
-        }
+        .btn-header { border: 1px solid var(--orange); color: var(--orange) !important; padding: 8px 18px; border-radius: 20px; font-size: 0.85rem; }
         .btn-header:hover { background: var(--orange); color: white !important; }
-
         .menu-toggle { display: none; font-size: 1.5rem; color: white; cursor: pointer; padding: 5px; }
-        
-        /* --- 3. HERO SECTION --- */
-        .hero {
-            position: relative;
-            padding: 120px 20px 60px; 
-            min-height: auto;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            text-align: center;
-            background: url('assets/images/caminhao_bg.jpg') no-repeat center center/cover;
-        }
-        .hero-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 26, 51, 0.75);
-            z-index: 1;
-        }
+        .hero { position: relative; padding: 120px 20px 60px; min-height: auto; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: url('assets/images/caminhao_bg.jpg') no-repeat center center/cover; }
+        .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 26, 51, 0.75); z-index: 1; }
         .hero-content { position: relative; z-index: 2; max-width: 800px; }
-        
-        .hero h1 { 
-            font-size: 2.2rem; font-weight: 800; line-height: 1.2; margin-bottom: 15px; 
-            text-shadow: var(--text-shadow);
-        }
-        .hero p { 
-            font-size: 1.1rem; margin-bottom: 25px; color: #eee; 
-            text-shadow: 1px 1px 3px black; font-weight: 500;
-        }
-        
-        .btn-hero {
-            background: var(--orange); color: white; padding: 16px 32px;
-            border-radius: 8px; font-weight: 700; font-size: 1rem;
-            display: inline-block; box-shadow: 0 4px 15px rgba(255, 102, 0, 0.4);
-            cursor: pointer; border: none; text-transform: uppercase; letter-spacing: 0.5px;
-        }
+        .hero h1 { font-size: 2.2rem; font-weight: 800; line-height: 1.2; margin-bottom: 15px; text-shadow: var(--text-shadow); }
+        .hero p { font-size: 1.1rem; margin-bottom: 25px; color: #eee; text-shadow: 1px 1px 3px black; font-weight: 500; }
+        .btn-hero { background: var(--orange); color: white; padding: 16px 32px; border-radius: 8px; font-weight: 700; font-size: 1rem; display: inline-block; box-shadow: 0 4px 15px rgba(255, 102, 0, 0.4); cursor: pointer; border: none; text-transform: uppercase; letter-spacing: 0.5px; }
         .btn-hero:hover { transform: scale(1.05); background: #e65c00; }
-
-        /* --- 4. SUPER CARD (FUSÃO) --- */
         .section-padding { padding: 40px 20px; max-width: 1000px; margin: 0 auto; }
         .section-title { text-align: center; font-size: 1.8rem; margin-bottom: 25px; text-shadow: 2px 2px 4px black; }
-
-        .super-card {
-            background: white; border-radius: 12px; overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-            color: #333;
-        }
-        
+        .super-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.6); color: #333; }
         .tabs-head { display: flex; background: #eee; border-bottom: 1px solid #ddd; }
-        .tab-btn {
-            flex: 1; padding: 15px 10px; text-align: center; cursor: pointer;
-            font-weight: 700; color: #666; border-bottom: 3px solid transparent;
-            transition: 0.3s; font-size: 0.9rem;
-        }
+        .tab-btn { flex: 1; padding: 15px 10px; text-align: center; cursor: pointer; font-weight: 700; color: #666; border-bottom: 3px solid transparent; transition: 0.3s; font-size: 0.9rem; }
         .tab-btn i { display: block; font-size: 1.4rem; margin-bottom: 5px; color: #888; }
         .tab-btn.active { background: white; color: var(--blue-dark); border-bottom-color: var(--orange); }
         .tab-btn.active i { color: var(--orange); }
-
         .tab-body { padding: 30px 15px; display: none; animation: fadeIn 0.4s; }
         .tab-body.active { display: block; }
         .tab-desc { text-align: center; font-size: 1rem; margin-bottom: 30px; color: #555; line-height: 1.5; padding: 0 10px; }
-
         .timeline { display: flex; justify-content: space-between; position: relative; margin-top: 20px; overflow-x: auto; padding-bottom: 10px; }
-        .timeline::before {
-            content: ''; position: absolute; top: 14px; left: 20px; right: 20px; height: 2px;
-            background: #e0e0e0; z-index: 1; min-width: 300px;
-        }
+        .timeline::before { content: ''; position: absolute; top: 14px; left: 20px; right: 20px; height: 2px; background: #e0e0e0; z-index: 1; min-width: 300px; }
         .time-step { position: relative; z-index: 2; text-align: center; flex: 1; min-width: 60px; }
-        .step-ball {
-            width: 30px; height: 30px; background: white; border: 2px solid var(--orange);
-            border-radius: 50%; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center;
-            font-weight: bold; color: var(--orange); font-size: 0.9rem;
-        }
+        .step-ball { width: 30px; height: 30px; background: white; border: 2px solid var(--orange); border-radius: 50%; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--orange); font-size: 0.9rem; }
         .step-text { font-size: 0.7rem; color: #444; font-weight: 600; line-height: 1.2; }
-
-        /* --- 5. BENEFÍCIOS DINÂMICOS (JORNADA) --- */
         .benefits-section { background: var(--blue-light); padding: 50px 20px; }
-        
-        .visual-route { 
-            display: flex; flex-direction: column; gap: 15px; 
-            max-width: 900px; margin: 0 auto; 
-        }
-        .route-item { 
-            display: flex; align-items: center; gap: 15px; 
-            background: rgba(255,255,255,0.03); padding: 20px; 
-            border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);
-            transition: 0.3s;
-        }
+        .visual-route { display: flex; flex-direction: column; gap: 15px; max-width: 900px; margin: 0 auto; }
+        .route-item { display: flex; align-items: center; gap: 15px; background: rgba(255,255,255,0.03); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); transition: 0.3s; }
         .route-item:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,102,0,0.3); }
-        
-        .route-icon { 
-            width: 55px; height: 55px; background: linear-gradient(135deg, rgba(255, 102, 0, 0.2), rgba(0,0,0,0)); 
-            color: var(--orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; 
-            font-size: 1.6rem; flex-shrink: 0; border: 1px solid rgba(255,102,0,0.2);
-        }
+        .route-icon { width: 55px; height: 55px; background: linear-gradient(135deg, rgba(255, 102, 0, 0.2), rgba(0,0,0,0)); color: var(--orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; flex-shrink: 0; border: 1px solid rgba(255,102,0,0.2); }
         .route-text h3 { font-size: 1.1rem; margin-bottom: 4px; color: white; }
         .route-text p { font-size: 0.9rem; color: #aaa; margin: 0; line-height: 1.4; }
-
-        /* --- 6. APOIE (EMOCIONAL) --- */
-        .apoie-section { 
-            text-align: center; padding: 50px 20px; 
-            background: linear-gradient(to bottom, var(--blue-dark), #000);
-            border-top: 1px solid rgba(255,255,255,0.05);
-        }
+        .apoie-section { text-align: center; padding: 50px 20px; background: linear-gradient(to bottom, var(--blue-dark), #000); border-top: 1px solid rgba(255,255,255,0.05); }
         .apoie-title { color: #ffd700; font-size: 1.4rem; margin-bottom: 10px; font-weight: 700; }
         .apoie-desc { font-size: 0.95rem; color: #999; max-width: 600px; margin: 0 auto 25px; line-height: 1.6; }
         .donation-pills { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
-        .pill-btn {
-            background: transparent; border: 1px solid #ffd700; color: #ffd700;
-            padding: 10px 24px; border-radius: 50px; cursor: pointer; font-size: 0.95rem; font-weight: 600;
-            transition: 0.2s;
-        }
+        .pill-btn { background: transparent; border: 1px solid #ffd700; color: #ffd700; padding: 10px 24px; border-radius: 50px; cursor: pointer; font-size: 0.95rem; font-weight: 600; transition: 0.2s; }
         .pill-btn:hover { background: #ffd700; color: #000; }
         .copy-feedback { color: #25D366; font-size: 0.9rem; margin-top: 15px; display: none; font-weight: 600; }
-
-        /* --- 7. RODAPÉ RICO --- */
         footer { background: #050505; padding: 60px 20px 20px; font-size: 0.9rem; border-top: 1px solid #222; }
-        
-        .footer-layout {
-            display: grid; grid-template-columns: 1fr; gap: 40px;
-            max-width: 1100px; margin: 0 auto 50px;
-        }
-        
-        .footer-links-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 30px;
-        }
+        .footer-layout { display: grid; grid-template-columns: 1fr; gap: 40px; max-width: 1100px; margin: 0 auto 50px; }
+        .footer-links-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 30px; }
         .footer-col h4 { color: white; margin-bottom: 20px; font-size: 1.1rem; border-left: 3px solid var(--orange); padding-left: 10px; }
         .footer-col ul li { margin-bottom: 12px; }
         .footer-col ul li a { color: #888; transition: 0.2s; }
         .footer-col ul li a:hover { color: var(--orange); padding-left: 5px; }
-
-        .footer-image-col {
-            position: relative; border-radius: 12px; overflow: hidden;
-            border: 1px solid #333; min-height: 250px; background: #111;
-        }
+        .footer-image-col { position: relative; border-radius: 12px; overflow: hidden; border: 1px solid #333; min-height: 250px; background: #111; }
         .footer-image-col img { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; transition: 0.5s; }
         .footer-image-col:hover img { opacity: 0.8; transform: scale(1.02); }
-        
-        .manifesto-overlay {
-            position: absolute; bottom: 0; left: 0; width: 100%;
-            padding: 20px; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-            color: white; text-align: right;
-        }
+        .manifesto-overlay { position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); color: white; text-align: right; }
         .manifesto-text { font-style: italic; font-size: 1.1rem; font-weight: 600; color: #fff; text-shadow: 2px 2px 4px black; }
-        
-        .footer-legal { 
-            text-align: center; border-top: 1px solid #222; padding-top: 30px; color: #555; font-size: 0.8rem; line-height: 1.6;
-        }
-
-        /* --- 8. MODAIS --- */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); z-index: 2000;
-            display: none; justify-content: center; align-items: center; padding: 10px;
-            backdrop-filter: blur(5px);
-        }
-        .modal-content {
-            background: #fff; width: 100%; max-width: 500px;
-            border-radius: 12px; padding: 30px; position: relative;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.7);
-            max-height: 90vh; overflow-y: auto; color: #333;
-        }
+        .footer-legal { text-align: center; border-top: 1px solid #222; padding-top: 30px; color: #555; font-size: 0.8rem; line-height: 1.6; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; display: none; justify-content: center; align-items: center; padding: 10px; backdrop-filter: blur(5px); }
+        .modal-content { background: #fff; width: 100%; max-width: 500px; border-radius: 12px; padding: 30px; position: relative; box-shadow: 0 25px 50px rgba(0,0,0,0.7); max-height: 90vh; overflow-y: auto; color: #333; }
         .modal-content.dark-mode { background: #1a1a1a; color: #eee; border: 1px solid #444; }
-        .close-modal {
-            position: absolute; top: 15px; right: 20px; font-size: 1.8rem;
-            color: #aaa; cursor: pointer; transition: 0.2s;
-        }
+        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 1.8rem; color: #aaa; cursor: pointer; transition: 0.2s; }
         .close-modal:hover { color: var(--orange); }
-        
-        .modal-title { 
-            text-align: center; margin-bottom: 20px; font-size: 1.4rem; color: var(--blue-dark);
-            border-bottom: 2px solid var(--orange); padding-bottom: 10px; display: inline-block;
-        }
+        .modal-title { text-align: center; margin-bottom: 20px; font-size: 1.4rem; color: var(--blue-dark); border-bottom: 2px solid var(--orange); padding-bottom: 10px; display: inline-block; }
         .dark-mode .modal-title { color: var(--orange); border-bottom-color: #555; }
-        
         .modal-text p { margin-bottom: 15px; line-height: 1.6; font-size: 0.95rem; }
         .modal-text ul { margin-left: 20px; margin-bottom: 15px; list-style: disc; color: #555; }
         .dark-mode .modal-text ul { color: #ccc; }
-        
         .input-group { margin-bottom: 15px; }
         .input-group label { display: block; color: #444; font-weight: 700; font-size: 0.85rem; margin-bottom: 5px; }
         .input-control { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; background: #f9f9f9; }
         .checkbox-wrapper { display: flex; align-items: flex-start; gap: 10px; margin: 20px 0; font-size: 0.8rem; color: #666; }
+        .btn-submit { width: 100%; background: var(--orange); color: white; border: none; padding: 15px; border-radius: 8px; font-size: 1.1rem; font-weight: 700; cursor: pointer; }
+        .wa-float { position: fixed; bottom: 20px; right: 20px; background: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; box-shadow: 0 5px 15px rgba(0,0,0,0.4); z-index: 1500; }
         
-        .btn-submit {
-            width: 100%; background: var(--orange); color: white; border: none;
-            padding: 15px; border-radius: 8px; font-size: 1.1rem; font-weight: 700; cursor: pointer;
-        }
-        .wa-float {
-            position: fixed; bottom: 20px; right: 20px; background: #25D366; color: white; 
-            width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 2rem; box-shadow: 0 5px 15px rgba(0,0,0,0.4); z-index: 1500;
-        }
-
-        /* --- MEDIA QUERIES --- */
         @media (min-width: 768px) {
             .nav-links { display: flex !important; position: static; background: transparent; flex-direction: row; padding: 0; box-shadow: none; width: auto; }
             .menu-toggle { display: none; }
@@ -246,18 +103,26 @@
             .hero h1 { font-size: 3rem; }
         }
         @media (max-width: 767px) {
-            .nav-links { 
-                position: absolute; top: 60px; right: 0; background: var(--blue-light);
-                flex-direction: column; width: 220px; padding: 20px; display: none;
-                border-radius: 0 0 0 15px; box-shadow: -5px 5px 15px rgba(0,0,0,0.5);
-            }
+            .nav-links { position: absolute; top: 60px; right: 0; background: var(--blue-light); flex-direction: column; width: 220px; padding: 20px; display: none; border-radius: 0 0 0 15px; box-shadow: -5px 5px 15px rgba(0,0,0,0.5); }
             .nav-links.active { display: flex; }
             .menu-toggle { display: block; }
+        }
+        
+        /* ALERTA DE DUPLICIDADE */
+        .duplicate-alert {
+            background: #fff3cd; color: #856404; padding: 15px; border-radius: 8px; border: 1px solid #ffeeba;
+            text-align: center; margin-bottom: 20px; display: none;
         }
     </style>
 </head>
 <body>
 
+    <!-- NAVBAR, HERO, SUPER CARD, BENEFICIOS, APOIE IGUAIS... (Pode manter o código anterior) -->
+    <!-- Para facilitar, vou repetir apenas a parte do RODAPÉ e FORMULÁRIO onde houve alteração -->
+
+    <!-- (INSIRA AQUI O CÓDIGO DA NAV, HERO, SEÇÕES ATÉ O APOIE) ... -->
+    <!-- ... -->
+    
     <!-- 1. HEADER -->
     <nav class="navbar">
         <div style="display:flex; align-items:center; gap:10px;">
@@ -269,7 +134,7 @@
             <a href="#como-funciona">Como Funciona</a>
             <a href="#modal-sobre" onclick="openModal('modal-sobre')">Sobre</a>
             <a href="#modal-investidores" onclick="openModal('modal-investidores')">Investidores</a>
-            <a href="#" class="btn-header" onclick="openForm('Motorista Cegonheiro')">SER PIONEIRO</a>
+            <a href="#" class="btn-header" onclick="checkDuplicateAndOpen()">SER PIONEIRO</a>
         </div>
 
         <div class="menu-toggle" onclick="toggleMenu()">
@@ -283,7 +148,7 @@
         <div class="hero-content">
             <h1>Loomper: A primeira plataforma operacional da logística automotiva.</h1>
             <p>Conectamos motoristas de cegonha a chapas, ajudantes e transportadoras de veículos.</p>
-            <button class="btn-hero" onclick="openForm('Motorista Cegonheiro')">QUERO SER PIONEIRO</button>
+            <button class="btn-hero" onclick="checkDuplicateAndOpen()">QUERO SER PIONEIRO</button>
         </div>
     </header>
 
@@ -292,6 +157,7 @@
         <h2 class="section-title">Como Funciona</h2>
         
         <div class="super-card">
+            <!-- Abas Mestras -->
             <div class="tabs-head">
                 <div class="tab-btn active" onclick="switchProfile('motorista', this)">
                     <i class="fa-solid fa-truck-front"></i> Motorista
@@ -304,21 +170,18 @@
                 </div>
             </div>
 
+            <!-- Conteúdo Dinâmico -->
             <div id="dynamic-content" class="tab-body active">
                 <p id="profile-desc" class="tab-desc">Encontre chapas qualificados rapidamente e gerencie sua carga.</p>
-                <div class="timeline" id="timeline-container">
-                    <!-- Injetado via JS -->
-                </div>
+                <div class="timeline" id="timeline-container"></div>
             </div>
         </div>
     </section>
 
-    <!-- 4. JORNADA / BENEFÍCIOS DINÂMICOS -->
+    <!-- 4. JORNADA -->
     <section class="benefits-section">
         <h2 class="section-title" id="journey-title">Sua Jornada</h2>
-        <div class="visual-route" id="journey-container">
-            <!-- Cards injetados via JS -->
-        </div>
+        <div class="visual-route" id="journey-container"></div>
     </section>
 
     <!-- 5. APOIE -->
@@ -333,7 +196,7 @@
         <p id="pix-msg" class="copy-feedback">Chave PIX copiada! (contato@loomper.com.br)</p>
     </section>
 
-    <!-- 6. RODAPÉ RICO -->
+    <!-- 6. RODAPÉ CORRIGIDO (PRIVACITY.HTML) -->
     <footer>
         <div class="footer-layout">
             <div class="footer-links-grid">
@@ -356,13 +219,13 @@
                     <h4>Legal</h4>
                     <ul>
                         <li><a href="terms.html" target="_blank">Termos de Uso</a></li>
-                        <li><a href="privacy.html" target="_blank">Privacidade</a></li>
+                        <!-- CORREÇÃO AQUI -->
+                        <li><a href="privacity.html" target="_blank">Privacidade</a></li>
                     </ul>
                 </div>
             </div>
 
             <div class="footer-image-col">
-                <!-- Correção da imagem para .png -->
                 <img src="assets/images/equipe_footer.png" alt="Equipe Loomper na estrada" onerror="this.style.background='#222'">
                 <div class="manifesto-overlay">
                     <p class="manifesto-text">"Quando o trabalho deixa de ser improviso, o crescimento deixa de ser sorte."</p>
@@ -382,6 +245,13 @@
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('modal-form')">&times;</span>
             <h3 class="modal-title">Cadastro Beta</h3>
+            
+            <!-- ALERTA DUPLICIDADE -->
+            <div id="duplicate-msg" class="duplicate-alert">
+                <strong>Atenção:</strong> Você já possui cadastro ativo.<br>
+                Seu código é: <span id="existing-code" style="font-weight:bold; font-size:1.2rem;">...</span>
+            </div>
+
             <form name="cadastro-beta" method="POST" data-netlify="true" action="/sucesso.html" id="loomperForm">
                 <input type="hidden" name="id_loomper_gerado" id="hiddenId">
                 <input type="hidden" name="termos_aceite_data" id="hiddenDate">
@@ -414,16 +284,15 @@
                 </div>
                 <div class="checkbox-wrapper">
                     <input type="checkbox" id="checkTermos" required>
-                    <label for="checkTermos">Li e concordo com os <a href="terms.html" target="_blank">Termos</a> e <a href="privacy.html" target="_blank">Privacidade</a>.</label>
+                    <!-- CORREÇÃO AQUI -->
+                    <label for="checkTermos">Li e concordo com os <a href="terms.html" target="_blank">Termos</a> e <a href="privacity.html" target="_blank">Privacidade</a>.</label>
                 </div>
                 <button type="submit" class="btn-submit">CONFIRMAR</button>
             </form>
         </div>
     </div>
 
-    <!-- MODAIS DE CONTEÚDO (DARK MODE) -->
-    
-    <!-- Sobre -->
+    <!-- OUTROS MODAIS (SOBRE, INVESTIDOR, GOV, FAQ) - MANTENHA IGUAL AO ANTERIOR -->
     <div id="modal-sobre" class="modal-overlay">
         <div class="modal-content dark-mode">
             <span class="close-modal" onclick="closeModal('modal-sobre')">&times;</span>
@@ -436,7 +305,6 @@
         </div>
     </div>
 
-    <!-- Investidores -->
     <div id="modal-investidores" class="modal-overlay">
         <div class="modal-content dark-mode">
             <span class="close-modal" onclick="closeModal('modal-investidores')">&times;</span>
@@ -455,7 +323,6 @@
         </div>
     </div>
 
-    <!-- Governo -->
     <div id="modal-gov" class="modal-overlay">
         <div class="modal-content dark-mode">
             <span class="close-modal" onclick="closeModal('modal-gov')">&times;</span>
@@ -469,13 +336,11 @@
                     <li>Geração de dados para políticas públicas.</li>
                 </ul>
                 <p><strong>Não é assistencialismo. É infraestrutura social aplicada à economia real.</strong></p>
-                <!-- Botão de Ação Solicitado -->
                 <button class="btn-submit" onclick="closeModal('modal-gov'); openForm('Governo')">AGENDAR REUNIÃO INSTITUCIONAL</button>
             </div>
         </div>
     </div>
 
-    <!-- FAQ -->
     <div id="modal-faq" class="modal-overlay">
         <div class="modal-content dark-mode">
             <span class="close-modal" onclick="closeModal('modal-faq')">&times;</span>
@@ -492,12 +357,11 @@
         </div>
     </div>
 
-    <!-- Whatsapp -->
     <a href="https://wa.me/5511965858142" class="wa-float" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
 
-    <!-- LÓGICA DO SISTEMA -->
+    <!-- SCRIPTS -->
     <script>
-        /* --- DADOS: TIMELINE & JORNADA --- */
+        // DADOS (IGUAL)
         const DATA = {
             'motorista': {
                 desc: "Encontre chapas qualificados rapidamente e gerencie sua carga com segurança.",
@@ -531,43 +395,52 @@
             }
         };
 
-        /* --- FUNÇÕES PRINCIPAIS --- */
         function init() {
             switchProfile('motorista', document.querySelector('.tab-btn.active'));
             
-            const rid = "LMP-" + Math.floor(1000 + Math.random() * 9000);
-            localStorage.setItem('meuIdLoomper', rid);
+            // Geração de ID apenas se não existir
+            let rid = localStorage.getItem('meuIdLoomper');
+            if(!rid) {
+                rid = "LMP-" + Math.floor(1000 + Math.random() * 9000);
+                localStorage.setItem('meuIdLoomper', rid);
+            }
             document.getElementById('hiddenId').value = rid;
             
             loadStates();
         }
 
+        /* --- VERIFICAÇÃO LOCAL DE DUPLICIDADE --- */
+        function checkDuplicateAndOpen(perfil) {
+            openForm(perfil);
+            
+            // Verifica se ja tem o ID salvo no navegador
+            let existing = localStorage.getItem('ja_cadastrado');
+            if(existing === 'true') {
+                document.getElementById('duplicate-msg').style.display = 'block';
+                document.getElementById('existing-code').innerText = localStorage.getItem('meuIdLoomper');
+            } else {
+                document.getElementById('duplicate-msg').style.display = 'none';
+            }
+        }
+
         function switchProfile(key, btn) {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             if(btn) btn.classList.add('active');
-            
             document.getElementById('profile-desc').textContent = DATA[key].desc;
             
-            const tlContainer = document.getElementById('timeline-container');
-            tlContainer.innerHTML = '';
+            const tl = document.getElementById('timeline-container');
+            tl.innerHTML = '';
             DATA[key].timeline.forEach((step, idx) => {
-                let html = `<div class="time-step"><div class="step-ball">${idx+1}</div><div class="step-text">${step}</div></div>`;
-                tlContainer.innerHTML += html;
+                tl.innerHTML += `<div class="time-step"><div class="step-ball">${idx+1}</div><div class="step-text">${step}</div></div>`;
             });
 
-            const jContainer = document.getElementById('journey-container');
-            jContainer.innerHTML = '';
+            const jc = document.getElementById('journey-container');
+            jc.innerHTML = '';
             DATA[key].benefits.forEach(b => {
-                let html = `
-                <div class="route-item">
-                    <div class="route-icon"><i class="fa-solid ${b.icon}"></i></div>
-                    <div class="route-text"><h3>${b.title}</h3><p>${b.text}</p></div>
-                </div>`;
-                jContainer.innerHTML += html;
+                jc.innerHTML += `<div class="route-item"><div class="route-icon"><i class="fa-solid ${b.icon}"></i></div><div class="route-text"><h3>${b.title}</h3><p>${b.text}</p></div></div>`;
             });
         }
 
-        /* --- UI & MODAIS --- */
         function openForm(perfil) {
             document.getElementById('modal-form').style.display = 'flex';
             if(perfil) document.getElementById('perfilSelect').value = perfil;
@@ -580,19 +453,12 @@
             n.style.display = (n.style.display === 'flex') ? 'none' : 'flex';
         }
 
-        // FECHAR AO CLICAR FORA (MENU MOBILE E MODAL)
         window.onclick = function(e) {
-            // Fechar Modal
-            if(e.target.classList.contains('modal-overlay')) {
-                e.target.style.display='none';
-            }
-            // Fechar Menu Mobile se clicar fora
+            if(e.target.classList.contains('modal-overlay')) e.target.style.display='none';
             const nav = document.getElementById('navLinks');
             const toggle = document.querySelector('.menu-toggle');
             if (window.innerWidth < 768 && nav.style.display === 'flex') {
-                if (!nav.contains(e.target) && !toggle.contains(e.target)) {
-                    nav.style.display = 'none';
-                }
+                if (!nav.contains(e.target) && !toggle.contains(e.target)) nav.style.display = 'none';
             }
         }
 
@@ -602,7 +468,6 @@
             setTimeout(()=>document.getElementById('pix-msg').style.display='none', 4000);
         }
 
-        /* --- IBGE --- */
         let validCities = [];
         function loadStates() {
             fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome')
@@ -616,27 +481,32 @@
         }
         document.getElementById('estadoSelect').addEventListener('change', function() {
             let uf = this.value;
-            let dl = document.getElementById('cidadesList');
-            let inp = document.getElementById('cidadeInput');
-            inp.value = ""; dl.innerHTML = ""; validCities = [];
+            let list = document.getElementById('cidadesList');
+            document.getElementById('cidadeInput').value = ""; list.innerHTML = ""; validCities = [];
             if(uf) {
                 fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`)
                 .then(r=>r.json()).then(res => {
                     res.forEach(c => {
                         let o = document.createElement('option');
-                        o.value = c.nome; dl.appendChild(o);
+                        o.value = c.nome; list.appendChild(o);
                         validCities.push(c.nome);
                     })
                 });
             }
         });
+
+        // AO ENVIAR: SALVA O TIPO DE PERFIL PARA USAR NA PAGINA DE SUCESSO
         document.getElementById('loomperForm').addEventListener('submit', function(e) {
+            let city = document.getElementById('cidadeInput').value;
+            if(!validCities.includes(city)) { e.preventDefault(); alert('Selecione uma cidade válida.'); return; }
+            
             document.getElementById('hiddenDate').value = new Date().toLocaleString();
-            let c = document.getElementById('cidadeInput').value;
-            if(!validCities.includes(c)) { e.preventDefault(); alert('Selecione uma cidade válida.'); }
+            
+            // SALVA QUE JÁ SE CADASTROU E QUAL O PERFIL
+            localStorage.setItem('ja_cadastrado', 'true');
+            localStorage.setItem('userProfile', document.getElementById('perfilSelect').value);
         });
 
-        // Mascara
         document.getElementById('whatsappInput').addEventListener('input', function(e){
             let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
             e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
