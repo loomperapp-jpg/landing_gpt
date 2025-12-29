@@ -1,154 +1,606 @@
-<script>
-    /* --- VARIÁVEIS GLOBAIS --- */
-    let cidadesValidas = []; // Lista para travar cidades erradas
-
-    /* --- 1. GERAÇÃO ANTECIPADA DE ID --- */
-    // Gera o ID assim que abre o site
-    const randomID = Math.floor(1000 + Math.random() * 9000);
-    const meuID = "LMP-" + randomID;
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loomper | A Primeira Plataforma da Logística Automotiva</title>
+    <meta name="description" content="Conectamos motoristas de cegonha, chapas e transportadoras.">
     
-    // 1. Preenche o campo oculto para ir no e-mail do Netlify
-    document.getElementById('idLoomperInput').value = meuID;
-    
-    // 2. Salva no navegador para mostrar na próxima tela
-    localStorage.setItem('meuIdLoomper', meuID);
+    <!-- Ícones e Fontes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
 
-    /* --- 2. LÓGICA DAS ABAS (PERFIS) --- */
-    function openTab(evt, tabName) {
-        var i, tabContent, tabBtn;
-        tabContent = document.getElementsByClassName("tab-content");
-        for (i = 0; i < tabContent.length; i++) {
-            tabContent[i].style.display = "none";
-            tabContent[i].classList.remove("active");
+    <style>
+        /* --- 1. VARIÁVEIS & RESET --- */
+        :root {
+            --blue-dark: #001A33;
+            --blue-light: #0b2441;
+            --orange: #FF6600;
+            --white: #ffffff;
+            --gray-soft: #f4f4f4;
+            --text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
         }
-        tabBtn = document.getElementsByClassName("tab-btn");
-        for (i = 0; i < tabBtn.length; i++) {
-            tabBtn[i].className = tabBtn[i].className.replace(" active", "");
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; scroll-behavior: smooth; }
+        body { background-color: var(--blue-dark); color: var(--white); overflow-x: hidden; }
+        ul { list-style: none; }
+        a { text-decoration: none; transition: 0.3s; }
+
+        /* --- 2. HEADER & NAVEGAÇÃO --- */
+        .navbar {
+            position: fixed; top: 0; left: 0; width: 100%;
+            background: rgba(0, 26, 51, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
-        document.getElementById(tabName).style.display = "block";
-        setTimeout(() => document.getElementById(tabName).classList.add("active"), 10);
-        evt.currentTarget.className += " active";
-    }
-
-    /* --- 3. TIMELINE DINÂMICA --- */
-    const stepsData = {
-        1: "<h4>1. Cadastre-se</h4><p>Preencha seus dados e escolha seu perfil. É rápido e 100% gratuito para profissionais.</p>",
-        2: "<h4>2. Validação</h4><p>Nossa equipe valida suas informações para garantir a segurança da comunidade.</p>",
-        3: "<h4>3. Receba Ofertas</h4><p>Conecte-se com oportunidades reais ou profissionais qualificados na sua região.</p>",
-        4: "<h4>4. Operação Segura</h4><p>Combine detalhes via chat integrado e realize o serviço com monitoramento.</p>",
-        5: "<h4>5. Avaliação</h4><p>Finalize o serviço e avalie. Construa sua reputação no ecossistema Loomper.</p>"
-    };
-    function setStep(stepNum) {
-        document.getElementById('step-content').innerHTML = stepsData[stepNum];
-        let dots = document.getElementsByClassName('step-dot');
-        for(let d of dots) d.classList.remove('active');
-        dots[stepNum-1].classList.add('active');
-    }
-    setStep(1);
-
-    /* --- 4. ACCORDION --- */
-    const details = document.querySelectorAll("details");
-    details.forEach((targetDetail) => {
-        targetDetail.addEventListener("click", () => {
-            details.forEach((detail) => {
-                if (detail !== targetDetail) {
-                    detail.removeAttribute("open");
-                }
-            });
-        });
-    });
-
-    /* --- 5. FORMULÁRIO E VALIDAÇÕES --- */
-    // a) Detectar Convite na URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const conviteCode = urlParams.get('convite');
-    if(conviteCode) {
-        document.getElementById('codigoIndicacao').value = conviteCode;
-    }
-
-    // b) Mudar Botão de Acordo com Perfil
-    function updateFormCTA() {
-        const perfil = document.getElementById('perfilSelect').value;
-        const btn = document.getElementById('submitBtn');
-        const perfilEmpresa = ['Montadora', 'Seguradora', 'Governo/Órgão Público', 'Investidor'];
-        if (perfilEmpresa.includes(perfil)) {
-            btn.textContent = "SOLICITAR DEMONSTRAÇÃO";
-        } else {
-            btn.textContent = "QUERO SER PIONEIRO";
-        }
-    }
-
-    function selectRole(role) {
-        const select = document.getElementById('perfilSelect');
-        select.value = role;
-        updateFormCTA();
-    }
-
-    /* --- 6. API IBGE + TRAVA DE SEGURANÇA --- */
-    fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome')
-        .then(res => res.json())
-        .then(estados => {
-            const selectUF = document.getElementById('estadoSelect');
-            estados.forEach(uf => {
-                const option = document.createElement('option');
-                option.value = uf.sigla;
-                option.textContent = uf.sigla;
-                selectUF.appendChild(option);
-            });
-        });
-
-    document.getElementById('estadoSelect').addEventListener('change', function() {
-        const uf = this.value;
-        const cidadeInput = document.getElementById('cidadeInput');
-        cidadeInput.value = ""; // Limpa cidade ao trocar estado
-        cidadesValidas = []; // Zera lista de validação
-
-        if(!uf) return;
+        .logo-img { height: 40px; }
         
-        fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`)
-            .then(res => res.json())
-            .then(cidades => {
-                const dataList = document.getElementById('cidadesList');
-                dataList.innerHTML = '';
-                cidades.forEach(cidade => {
-                    // Adiciona na lista visual
-                    const option = document.createElement('option');
-                    option.value = cidade.nome;
-                    dataList.appendChild(option);
-                    // Adiciona na lista de segurança (memória)
-                    cidadesValidas.push(cidade.nome);
-                });
-            });
-    });
-
-    // 🚨 INTERCEPTAR O ENVIO PARA VALIDAR CIDADE 🚨
-    document.getElementById('loomperForm').addEventListener('submit', function(e) {
-        const cidadeDigitada = document.getElementById('cidadeInput').value;
-        const estadoSelecionado = document.getElementById('estadoSelect').value;
-
-        // Se tem estado selecionado, mas a cidade não está na lista oficial do IBGE
-        if (estadoSelecionado && !cidadesValidas.includes(cidadeDigitada)) {
-            e.preventDefault(); // CANCELA O ENVIO
-            alert(`Erro: A cidade "${cidadeDigitada}" não pertence ao estado ${estadoSelecionado}. Por favor, selecione uma cidade válida da lista.`);
-            document.getElementById('cidadeInput').focus();
-            return false;
+        /* Menu Desktop */
+        .nav-links { display: flex; gap: 25px; align-items: center; }
+        .nav-links a { color: white; font-size: 0.9rem; font-weight: 600; }
+        .nav-links a:hover { color: var(--orange); }
+        .btn-header { 
+            border: 1px solid var(--orange); color: var(--orange) !important; 
+            padding: 8px 20px; border-radius: 20px; 
         }
-        // Se passou, o Netlify envia normalmente
-    });
+        .btn-header:hover { background: var(--orange); color: white !important; }
 
-    /* --- 7. EXTRAS --- */
-    function copyPix(valor) {
-        const pixKey = "contato@loomper.com.br"; 
-        navigator.clipboard.writeText(pixKey).then(() => {
-            const feedback = document.getElementById('pix-feedback');
-            feedback.classList.remove('hidden');
-            feedback.style.display = 'block';
-            setTimeout(() => { feedback.style.display = 'none'; }, 6000);
+        /* Menu Mobile (Hambúrguer) */
+        .menu-toggle { display: none; font-size: 1.8rem; color: white; cursor: pointer; }
+        
+        /* --- 3. HERO SECTION (CAPA) --- */
+        .hero {
+            position: relative;
+            min-height: 90vh; /* Altura dinâmica para mobile */
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; padding: 100px 20px 40px;
+            background: url('assets/images/caminhao_bg.jpg') no-repeat center center/cover;
+        }
+        /* Máscara suave (75%) para mostrar o caminhão */
+        .hero-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 26, 51, 0.75);
+            z-index: 1;
+        }
+        .hero-content { position: relative; z-index: 2; max-width: 800px; }
+        
+        .hero h1 { 
+            font-size: 2.5rem; font-weight: 800; line-height: 1.2; margin-bottom: 20px; 
+            text-shadow: var(--text-shadow); /* Sombra para leitura */
+        }
+        .hero p { 
+            font-size: 1.1rem; margin-bottom: 30px; color: #ddd; 
+            text-shadow: 1px 1px 2px black; 
+        }
+        
+        .btn-hero {
+            background: var(--orange); color: white; padding: 16px 32px;
+            border-radius: 8px; font-weight: 700; font-size: 1rem;
+            display: inline-block; box-shadow: 0 4px 15px rgba(255, 102, 0, 0.4);
+            cursor: pointer; border: none;
+        }
+        .btn-hero:hover { transform: scale(1.05); background: #e65c00; }
+
+        /* --- 4. SUPER CARD (FUSÃO PERFIS + TIMELINE) --- */
+        .section-padding { padding: 40px 20px; max-width: 1000px; margin: 0 auto; }
+        .section-title { text-align: center; font-size: 1.8rem; margin-bottom: 30px; text-shadow: 2px 2px 4px black; }
+
+        .super-card {
+            background: white; border-radius: 15px; overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            color: #333;
+        }
+        
+        /* Abas */
+        .tabs-head { display: flex; background: #eee; }
+        .tab-btn {
+            flex: 1; padding: 20px; text-align: center; cursor: pointer;
+            font-weight: 700; color: #666; border-bottom: 3px solid transparent;
+            transition: 0.3s;
+        }
+        .tab-btn i { display: block; font-size: 1.5rem; margin-bottom: 5px; }
+        .tab-btn.active { background: white; color: var(--orange); border-bottom-color: var(--orange); }
+
+        /* Conteúdo da Aba */
+        .tab-body { padding: 30px 20px; display: none; animation: fadeIn 0.4s; }
+        .tab-body.active { display: block; }
+        .tab-desc { text-align: center; font-size: 1.1rem; margin-bottom: 30px; color: #555; }
+
+        /* Timeline Visual */
+        .timeline { display: flex; justify-content: space-between; position: relative; margin-top: 20px; }
+        .timeline::before {
+            content: ''; position: absolute; top: 15px; left: 0; width: 100%; height: 2px;
+            background: #ddd; z-index: 1;
+        }
+        .time-step { position: relative; z-index: 2; text-align: center; flex: 1; }
+        .step-ball {
+            width: 32px; height: 32px; background: white; border: 2px solid var(--orange);
+            border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center;
+            font-weight: bold; color: var(--orange);
+        }
+        .step-text { font-size: 0.75rem; color: #444; font-weight: 600; }
+
+        /* --- 5. BENEFÍCIOS (ROTA DA VANTAGEM) --- */
+        .benefits-section { background: var(--blue-light); padding: 50px 20px; }
+        
+        /* Mobile: Fluxo Vertical */
+        .visual-route { display: flex; flex-direction: column; gap: 20px; max-width: 500px; margin: 0 auto; }
+        .route-item { 
+            display: flex; align-items: center; gap: 15px; 
+            background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .route-icon { 
+            width: 50px; height: 50px; background: rgba(255, 102, 0, 0.2); color: var(--orange);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
+        }
+        .route-text h3 { font-size: 1rem; margin-bottom: 3px; color: white; }
+        .route-text p { font-size: 0.85rem; color: #aaa; margin: 0; }
+
+        /* Desktop: Grid (Media Query lá embaixo) */
+
+        /* --- 6. APOIE (DISCRETO) --- */
+        .apoie-section { 
+            text-align: center; padding: 40px 20px; 
+            border-top: 1px solid rgba(255,255,255,0.05);
+            background: linear-gradient(to bottom, var(--blue-dark), #000);
+        }
+        .apoie-title { color: #ffd700; font-size: 1.2rem; margin-bottom: 10px; }
+        .apoie-desc { font-size: 0.9rem; color: #888; max-width: 600px; margin: 0 auto 20px; }
+        .donation-pills { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .pill-btn {
+            background: transparent; border: 1px solid #ffd700; color: #ffd700;
+            padding: 8px 20px; border-radius: 50px; cursor: pointer; font-size: 0.9rem;
+            transition: 0.2s;
+        }
+        .pill-btn:hover { background: #ffd700; color: black; }
+        .copy-feedback { color: #25D366; font-size: 0.8rem; margin-top: 10px; display: none; }
+
+        /* --- 7. RODAPÉ (FOOTER) --- */
+        footer { background: black; padding: 50px 20px 20px; font-size: 0.9rem; border-top: 1px solid #222; }
+        .footer-grid { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 30px; max-width: 1000px; margin: 0 auto 40px; 
+        }
+        .footer-col h4 { color: white; margin-bottom: 15px; font-size: 1rem; }
+        .footer-col ul li { margin-bottom: 10px; }
+        .footer-col ul li a { color: #888; }
+        .footer-col ul li a:hover { color: var(--orange); text-decoration: underline; }
+        
+        .footer-legal { 
+            text-align: center; border-top: 1px solid #222; padding-top: 20px; color: #555; font-size: 0.8rem; 
+        }
+        .footer-legal strong { color: #777; }
+
+        /* --- 8. MODAL DO FORMULÁRIO (OCULTO) --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 2000;
+            display: none; justify-content: center; align-items: center; padding: 20px;
+            backdrop-filter: blur(5px);
+        }
+        .modal-content {
+            background: white; width: 100%; max-width: 450px;
+            border-radius: 15px; padding: 30px; position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            max-height: 90vh; overflow-y: auto;
+        }
+        .close-modal {
+            position: absolute; top: 15px; right: 20px; font-size: 1.5rem;
+            color: #aaa; cursor: pointer;
+        }
+        .modal-title { color: var(--blue-dark); text-align: center; margin-bottom: 20px; font-size: 1.5rem; }
+        
+        /* Estilos do Form */
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; color: #444; font-weight: 700; font-size: 0.85rem; margin-bottom: 5px; }
+        .input-control { 
+            width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; 
+            font-size: 1rem; background: #f9f9f9; 
+        }
+        .checkbox-wrapper { display: flex; align-items: flex-start; gap: 10px; margin: 20px 0; font-size: 0.8rem; color: #666; }
+        .checkbox-wrapper input { mt: 3px; }
+        
+        .btn-submit {
+            width: 100%; background: var(--orange); color: white; border: none;
+            padding: 15px; border-radius: 8px; font-size: 1.1rem; font-weight: 700;
+            cursor: pointer;
+        }
+        .btn-submit:disabled { background: #ccc; cursor: not-allowed; }
+
+        /* Whatsapp Flutuante */
+        .wa-float {
+            position: fixed; bottom: 20px; right: 20px;
+            background: #25D366; color: white; width: 60px; height: 60px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 2rem; box-shadow: 0 5px 15px rgba(0,0,0,0.3); z-index: 1500;
+        }
+
+        /* --- MEDIA QUERIES --- */
+        @media (max-width: 768px) {
+            .nav-links { 
+                position: absolute; top: 70px; right: 0; background: var(--blue-light);
+                flex-direction: column; width: 200px; padding: 20px; 
+                display: none; border-radius: 0 0 0 10px; box-shadow: -5px 5px 10px rgba(0,0,0,0.5);
+            }
+            .nav-links.active { display: flex; }
+            .menu-toggle { display: block; }
+            
+            .hero h1 { font-size: 1.8rem; }
+            .timeline { overflow-x: auto; padding-bottom: 10px; }
+            .step-text { font-size: 0.7rem; }
+        }
+
+        @media (min-width: 769px) {
+            .visual-route { 
+                flex-direction: row; flex-wrap: wrap; justify-content: center; max-width: 1000px; 
+            }
+            .route-item { flex: 1; min-width: 200px; text-align: center; flex-direction: column; }
+        }
+
+        @keyframes fadeIn { from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
+    </style>
+</head>
+<body>
+
+    <!-- 1. HEADER -->
+    <nav class="navbar">
+        <!-- Logo -->
+        <img src="assets/images/logotipo.png" alt="Loomper" class="logo-img" onerror="this.style.display='none'; document.querySelector('.logo-text').style.display='block'">
+        <span class="logo-text" style="display:none; color:white; font-weight:800; font-size:1.5rem;">LOOMPER</span>
+
+        <!-- Menu Desktop -->
+        <div class="nav-links" id="navLinks">
+            <a href="#como-funciona">Como Funciona</a>
+            <a href="#modal-institucional" onclick="openModal('modal-institucional')">Para Empresas</a>
+            <a href="#" class="btn-header" onclick="openForm('Motorista Cegonheiro')">SER PIONEIRO</a>
+        </div>
+
+        <!-- Mobile Toggle -->
+        <div class="menu-toggle" onclick="toggleMenu()">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+    </nav>
+
+    <!-- 2. HERO -->
+    <header class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Loomper: A primeira plataforma operacional da logística automotiva.</h1>
+            <p>Conectamos motoristas de cegonha a chapas, ajudantes e transportadoras de veículos.</p>
+            <button class="btn-hero" onclick="openForm('Motorista Cegonheiro')">QUERO SER PIONEIRO</button>
+        </div>
+    </header>
+
+    <!-- 3. SUPER CARD (PERFIS + FLUXO) -->
+    <section id="como-funciona" class="section-padding">
+        <h2 class="section-title">Como Funciona</h2>
+        
+        <div class="super-card">
+            <!-- Abas -->
+            <div class="tabs-head">
+                <div class="tab-btn active" onclick="switchTab('motorista', this)">
+                    <i class="fa-solid fa-truck-front"></i> Sou Motorista
+                </div>
+                <div class="tab-btn" onclick="switchTab('chapa', this)">
+                    <i class="fa-solid fa-helmet-safety"></i> Sou Chapa
+                </div>
+                <div class="tab-btn" onclick="switchTab('empresa', this)">
+                    <i class="fa-solid fa-building"></i> Sou Empresa
+                </div>
+            </div>
+
+            <!-- Conteúdo Motorista -->
+            <div id="content-motorista" class="tab-body active">
+                <p class="tab-desc">Encontre chapas qualificados rapidamente e gerencie sua carga.</p>
+                <div class="timeline">
+                    <div class="time-step"><div class="step-ball">1</div><div class="step-text">Cadastro</div></div>
+                    <div class="time-step"><div class="step-ball">2</div><div class="step-text">Validação</div></div>
+                    <div class="time-step"><div class="step-ball">3</div><div class="step-text">Solicitar Chapa</div></div>
+                    <div class="time-step"><div class="step-ball">4</div><div class="step-text">Execução</div></div>
+                    <div class="time-step"><div class="step-ball">5</div><div class="step-text">Avaliação</div></div>
+                </div>
+            </div>
+
+            <!-- Conteúdo Chapa -->
+            <div id="content-chapa" class="tab-body">
+                <p class="tab-desc">Receba ofertas de trabalho no celular e construa seu histórico.</p>
+                <div class="timeline">
+                    <div class="time-step"><div class="step-ball">1</div><div class="step-text">Cadastro</div></div>
+                    <div class="time-step"><div class="step-ball">2</div><div class="step-text">Aprovação</div></div>
+                    <div class="time-step"><div class="step-ball">3</div><div class="step-text">Oferta</div></div>
+                    <div class="time-step"><div class="step-ball">4</div><div class="step-text">Trabalho</div></div>
+                    <div class="time-step"><div class="step-ball">5</div><div class="step-text">Pagamento</div></div>
+                </div>
+            </div>
+
+            <!-- Conteúdo Empresa -->
+            <div id="content-empresa" class="tab-body">
+                <p class="tab-desc">Compliance, ESG e Gestão completa para Transportadoras e Montadoras.</p>
+                <div class="timeline">
+                    <div class="time-step"><div class="step-ball">1</div><div class="step-text">Cadastro</div></div>
+                    <div class="time-step"><div class="step-ball">2</div><div class="step-text">Demo</div></div>
+                    <div class="time-step"><div class="step-ball">3</div><div class="step-text">Contrato</div></div>
+                    <div class="time-step"><div class="step-ball">4</div><div class="step-text">Onboarding</div></div>
+                    <div class="time-step"><div class="step-ball">5</div><div class="step-text">Gestão</div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. BENEFÍCIOS (ROTA DA VANTAGEM) -->
+    <section class="benefits-section">
+        <h2 class="section-title">Sua Jornada</h2>
+        
+        <div class="visual-route">
+            <div class="route-item">
+                <div class="route-icon"><i class="fa-solid fa-user-plus"></i></div>
+                <div class="route-text">
+                    <h3>Cadastro Gratuito</h3>
+                    <p>Sem mensalidade para profissionais.</p>
+                </div>
+            </div>
+            <div class="route-item">
+                <div class="route-icon"><i class="fa-solid fa-medal"></i></div>
+                <div class="route-text">
+                    <h3>Selo Pioneiro</h3>
+                    <p>Destaque vitalício no seu perfil.</p>
+                </div>
+            </div>
+            <div class="route-item">
+                <div class="route-icon"><i class="fa-solid fa-gift"></i></div>
+                <div class="route-text">
+                    <h3>Clube de Vantagens</h3>
+                    <p>Descontos reais com parceiros.</p>
+                </div>
+            </div>
+            <div class="route-item">
+                <div class="route-icon"><i class="fa-solid fa-rocket"></i></div>
+                <div class="route-text">
+                    <h3>Prioridade</h3>
+                    <p>Acesso antecipado a cargas.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. APOIE (DISCRETO) -->
+    <section class="apoie-section">
+        <h3 class="apoie-title">Mova este Propósito</h3>
+        <p class="apoie-desc">O Loomper é uma iniciativa independente. Sua contribuição ajuda a manter a plataforma gratuita para os motoristas.</p>
+        
+        <div class="donation-pills">
+            <button class="pill-btn" onclick="copyPix('20.00')">Apoiar R$ 20</button>
+            <button class="pill-btn" onclick="copyPix('50.00')">Apoiar R$ 50</button>
+            <button class="pill-btn" onclick="copyPix('Outro')">Outro Valor</button>
+        </div>
+        <p id="pix-msg" class="copy-feedback">Chave PIX copiada! (contato@loomper.com.br)</p>
+    </section>
+
+    <!-- 6. RODAPÉ -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>Institucional</h4>
+                <ul>
+                    <li><a href="#" onclick="openModal('modal-institucional')">Sobre o Ecossistema</a></li>
+                    <li><a href="#" onclick="openModal('modal-institucional')">Para Investidores</a></li>
+                    <li><a href="#" onclick="openModal('modal-institucional')">Governo & Social</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Ajuda</h4>
+                <ul>
+                    <li><a href="#">FAQ (Perguntas)</a></li>
+                    <li><a href="mailto:contato@loomper.com.br">Suporte por Email</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Termos de Uso</a></li>
+                    <li><a href="#">Privacidade (LGPD)</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-legal">
+            <p>&copy; 2025 Loomper. Todos os direitos reservados.</p>
+            <p>Uma empresa do grupo <strong>Ajud.ai Brasil Inova Simples (i.s.)</strong></p>
+            <p>CNPJ: 59.150.688/0001-39 | São Bernardo do Campo-SP</p>
+        </div>
+    </footer>
+
+    <!-- MODAL: FORMULÁRIO DE CADASTRO -->
+    <div id="modal-form" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('modal-form')">&times;</span>
+            <h3 class="modal-title">Cadastro Beta</h3>
+            
+            <form name="cadastro-beta" method="POST" data-netlify="true" action="/sucesso.html" id="loomperForm">
+                
+                <!-- Campos Ocultos -->
+                <input type="hidden" name="id_loomper_gerado" id="hiddenId">
+                <input type="hidden" name="termos_aceite_data" id="hiddenDate">
+
+                <div class="input-group">
+                    <label>Você é:</label>
+                    <select name="perfil" id="perfilSelect" class="input-control" required>
+                        <option value="Motorista Cegonheiro">Motorista Cegonheiro</option>
+                        <option value="Chapa/Ajudante">Chapa/Ajudante</option>
+                        <option value="Transportadora">Transportadora</option>
+                        <option value="Montadora">Montadora</option>
+                        <option value="Seguradora">Seguradora</option>
+                        <option value="Governo">Governo/Social</option>
+                        <option value="Investidor">Investidor</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Nome Completo</label>
+                    <input type="text" name="nome" class="input-control" required>
+                </div>
+
+                <div class="input-group">
+                    <label>WhatsApp</label>
+                    <input type="tel" name="whatsapp" id="whatsappInput" class="input-control" placeholder="(11) 99999-9999" required>
+                </div>
+
+                <div class="input-group">
+                    <label>E-mail</label>
+                    <input type="email" name="email" class="input-control" required>
+                </div>
+
+                <div class="input-group" style="display:flex; gap:10px;">
+                    <div style="flex:1">
+                        <label>UF</label>
+                        <select name="estado" id="estadoSelect" class="input-control" required>
+                            <option value="">--</option>
+                        </select>
+                    </div>
+                    <div style="flex:2">
+                        <label>Cidade</label>
+                        <input type="text" name="cidade" id="cidadeInput" list="cidadesList" class="input-control" required>
+                        <datalist id="cidadesList"></datalist>
+                    </div>
+                </div>
+
+                <!-- Checkbox LGPD -->
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="checkTermos" required>
+                    <label for="checkTermos">Li e concordo com os Termos de Uso e Política de Privacidade da Loomper.</label>
+                </div>
+
+                <button type="submit" class="btn-submit">CONFIRMAR CADASTRO</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: INSTITUCIONAL (STAKEHOLDERS) -->
+    <div id="modal-institucional" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('modal-institucional')">&times;</span>
+            <h3 class="modal-title">Ecossistema Loomper</h3>
+            
+            <div style="text-align: left; color:#555;">
+                <p><strong>Transportadoras:</strong> Gestão completa, relatórios ESG e compliance OEA.</p>
+                <hr style="margin:10px 0; border:0; border-top:1px solid #eee;">
+                
+                <p><strong>Montadoras:</strong> Conecte sua produção diretamente aos transportadores. Otimize a distribuição.</p>
+                <hr style="margin:10px 0; border:0; border-top:1px solid #eee;">
+                
+                <p><strong>Seguradoras:</strong> Reduza sinistralidade com dados reais e agilize liquidações.</p>
+                <hr style="margin:10px 0; border:0; border-top:1px solid #eee;">
+                
+                <p><strong>Governo / Social:</strong> Inclusão digital para ~80 mil trabalhadores invisíveis (Chapas). Dados para segurança viária.</p>
+                <hr style="margin:10px 0; border:0; border-top:1px solid #eee;">
+                
+                <p><strong>Investidores:</strong> Modelo Asset Light escalável. Mercado de +3 milhões de conexões/ano (Novos e Seminovos).</p>
+                
+                <br>
+                <button class="btn-hero" style="width:100%" onclick="closeModal('modal-institucional'); openForm('Investidor')">FALAR COM A DIREÇÃO</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Whatsapp Float -->
+    <a href="https://wa.me/5511965858142" class="wa-float" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+
+    <!-- SCRIPTS -->
+    <script>
+        /* --- 1. ID & DATA (LGPD) --- */
+        const randomID = "LMP-" + Math.floor(1000 + Math.random() * 9000);
+        localStorage.setItem('meuIdLoomper', randomID);
+        document.getElementById('hiddenId').value = randomID;
+
+        document.getElementById('loomperForm').addEventListener('submit', function() {
+            document.getElementById('hiddenDate').value = new Date().toLocaleString('pt-BR');
         });
-    }
 
-    document.getElementById('whatsappInput').addEventListener('input', function (e) {
-        let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
-        e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
-    });
-</script>
+        /* --- 2. MODAIS --- */
+        function openForm(perfilPreSelecionado) {
+            document.getElementById('modal-form').style.display = 'flex';
+            if(perfilPreSelecionado) document.getElementById('perfilSelect').value = perfilPreSelecionado;
+        }
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        
+        // Fechar ao clicar fora
+        window.onclick = function(e) {
+            if (e.target.classList.contains('modal-overlay')) {
+                e.target.style.display = 'none';
+            }
+        }
+
+        /* --- 3. ABAS (SUPER CARD) --- */
+        function switchTab(tabName, btn) {
+            // Remove active de todos
+            document.querySelectorAll('.tab-body').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            // Adiciona no clicado
+            document.getElementById('content-'+tabName).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        /* --- 4. MENU MOBILE --- */
+        function toggleMenu() {
+            const nav = document.getElementById('navLinks');
+            nav.style.display = (nav.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        /* --- 5. VALIDAÇÃO CIDADE (IBGE) --- */
+        let cidadesValidas = [];
+        
+        fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome')
+        .then(r => r.json()).then(estados => {
+            const sel = document.getElementById('estadoSelect');
+            estados.forEach(e => {
+                let opt = document.createElement('option');
+                opt.value = e.sigla; opt.innerText = e.sigla;
+                sel.appendChild(opt);
+            });
+        });
+
+        document.getElementById('estadoSelect').addEventListener('change', function() {
+            let uf = this.value;
+            let list = document.getElementById('cidadesList');
+            let input = document.getElementById('cidadeInput');
+            
+            input.value = ""; list.innerHTML = ""; cidadesValidas = [];
+            
+            if(uf) {
+                fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`)
+                .then(r => r.json()).then(cidades => {
+                    cidades.forEach(c => {
+                        let opt = document.createElement('option');
+                        opt.value = c.nome; list.appendChild(opt);
+                        cidadesValidas.push(c.nome);
+                    });
+                });
+            }
+        });
+
+        document.getElementById('loomperForm').addEventListener('submit', function(e) {
+            let city = document.getElementById('cidadeInput').value;
+            if(!cidadesValidas.includes(city)) {
+                e.preventDefault();
+                alert('Por favor, selecione uma cidade válida da lista sugerida.');
+            }
+        });
+
+        /* --- 6. EXTRAS --- */
+        function copyPix(v) {
+            navigator.clipboard.writeText("contato@loomper.com.br");
+            document.getElementById('pix-msg').style.display = 'block';
+            setTimeout(() => document.getElementById('pix-msg').style.display='none', 4000);
+        }
+
+        // Mascara Zap
+        document.getElementById('whatsappInput').addEventListener('input', function(e){
+            let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
+            e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
+        });
+    </script>
+</body>
+</html>
